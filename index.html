@@ -1,1 +1,2415 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>SGPA → CGPA</title>
+
+<style>
+:root{
+  --bg-0:#080a14;
+  --bg-1:#0d1120;
+
+  --glass:rgba(255,255,255,0.045);
+  --glass-strong:rgba(255,255,255,0.08);
+
+  --border:rgba(255,255,255,0.09);
+  --border-strong:rgba(255,255,255,0.18);
+
+  --text-0:#f2f3f7;
+  --text-1:#a9adc2;
+  --text-2:#6d7188;
+
+  --violet:#8b7bff;
+  --cyan:#5ee6d0;
+  --amber:#ffb454;
+  --red:#ff6b7a;
+
+  --radius-lg:22px;
+  --radius-md:14px;
+  --radius-sm:9px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  height:100%;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  min-height:100dvh;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:var(--bg-0);
+  color:var(--text-0);
+
+  overflow-x:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:
+    clamp(10px,2.4vh,28px)
+    clamp(12px,3vw,28px);
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      #141b33 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 85% 15%,
+      #1a1430 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      #0f1a24 0%,
+      transparent 60%
+    ),
+    var(--bg-1);
+}
+
+.orb{
+  position:fixed;
+
+  border-radius:50%;
+
+  filter:blur(70px);
+
+  opacity:0.35;
+
+  z-index:-1;
+
+  will-change:transform;
+}
+
+.orb-1{
+  width:38vw;
+  height:38vw;
+
+  max-width:480px;
+  max-height:480px;
+
+  background:
+    radial-gradient(
+      circle,
+      var(--violet),
+      transparent 70%
+    );
+
+  top:-12%;
+  left:-10%;
+
+  animation:
+    drift1 22s ease-in-out infinite;
+}
+
+.orb-2{
+  width:32vw;
+  height:32vw;
+
+  max-width:420px;
+  max-height:420px;
+
+  background:
+    radial-gradient(
+      circle,
+      var(--cyan),
+      transparent 70%
+    );
+
+  bottom:-14%;
+  right:-8%;
+
+  animation:
+    drift2 26s ease-in-out infinite;
+}
+
+.orb-3{
+  width:22vw;
+  height:22vw;
+
+  max-width:300px;
+  max-height:300px;
+
+  background:
+    radial-gradient(
+      circle,
+      var(--amber),
+      transparent 70%
+    );
+
+  top:40%;
+  right:20%;
+
+  opacity:0.18;
+
+  animation:
+    drift1 30s ease-in-out infinite reverse;
+}
+
+@keyframes drift1{
+  0%,100%{
+    transform:translate(0,0) scale(1);
+  }
+
+  50%{
+    transform:translate(4%,6%) scale(1.08);
+  }
+}
+
+@keyframes drift2{
+  0%,100%{
+    transform:translate(0,0) scale(1);
+  }
+
+  50%{
+    transform:translate(-5%,-4%) scale(1.06);
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .orb{
+    animation:none;
+  }
+}
+
+
+/* =========================================================
+   MAIN SHELL
+========================================================= */
+
+.shell{
+  width:100%;
+  max-width:1180px;
+
+  background:var(--glass);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-lg);
+
+  backdrop-filter:
+    blur(28px)
+    saturate(140%);
+
+  -webkit-backdrop-filter:
+    blur(28px)
+    saturate(140%);
+
+  box-shadow:
+    0 30px 80px -30px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+
+  padding:
+    clamp(16px,2.6vh,30px)
+    clamp(16px,2.6vw,32px);
+
+  display:flex;
+  flex-direction:column;
+
+  gap:clamp(12px,2vh,20px);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+  display:flex;
+
+  align-items:baseline;
+  justify-content:space-between;
+
+  gap:12px;
+
+  flex-wrap:wrap;
+}
+
+header h1{
+  margin:0;
+
+  font-size:
+    clamp(
+      1.2rem,
+      1.6vw + 0.6rem,
+      1.65rem
+    );
+
+  font-weight:650;
+
+  letter-spacing:-0.02em;
+}
+
+header p{
+  margin:0;
+
+  color:var(--text-2);
+
+  font-size:0.82rem;
+
+  font-weight:450;
+}
+
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.main-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:
+    clamp(10px,1.4vw,16px);
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.card{
+  background:var(--glass);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-md);
+
+  padding:
+    clamp(12px,1.6vh,18px)
+    clamp(12px,1.4vw,16px);
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+
+  transition:
+    border-color .25s ease,
+    background .25s ease,
+    transform .25s ease;
+
+  position:relative;
+}
+
+.card:focus-within{
+  border-color:var(--border-strong);
+
+  background:var(--glass-strong);
+
+  transform:translateY(-2px);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.card-head{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:8px;
+}
+
+.card-head .label{
+  font-size:0.72rem;
+
+  font-weight:600;
+
+  color:var(--text-1);
+
+  letter-spacing:0.01em;
+}
+
+.card-head .credits{
+  font-size:0.66rem;
+
+  color:var(--text-2);
+
+  background:rgba(255,255,255,0.04);
+
+  border:1px solid var(--border);
+
+  padding:2px 7px;
+
+  border-radius:100px;
+
+  white-space:nowrap;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.field{
+  display:flex;
+
+  flex-direction:column;
+
+  gap:5px;
+}
+
+.field label{
+  font-size:0.7rem;
+
+  color:var(--text-2);
+
+  font-weight:500;
+}
+
+.input-wrap{
+  position:relative;
+
+  display:flex;
+
+  align-items:center;
+}
+
+input[type="number"]{
+  width:100%;
+
+  appearance:textfield;
+
+  -moz-appearance:textfield;
+
+  background:rgba(255,255,255,0.035);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-sm);
+
+  color:var(--text-0);
+
+  font-size:0.98rem;
+
+  font-weight:560;
+
+  font-family:inherit;
+
+  padding:9px 12px;
+
+  outline:none;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{
+  -webkit-appearance:none;
+  margin:0;
+}
+
+input[type="number"]::placeholder{
+  color:var(--text-2);
+  font-weight:450;
+}
+
+input[type="number"]:focus{
+  border-color:var(--violet);
+
+  background:rgba(139,123,255,0.07);
+
+  box-shadow:
+    0 0 0 3px rgba(139,123,255,0.15);
+}
+
+input[type="number"].error{
+  border-color:var(--red);
+
+  box-shadow:
+    0 0 0 3px rgba(255,107,122,0.14);
+}
+
+.unit{
+  position:absolute;
+
+  right:12px;
+
+  font-size:0.72rem;
+
+  color:var(--text-2);
+
+  pointer-events:none;
+}
+
+.hint{
+  min-height:14px;
+
+  font-size:0.66rem;
+
+  color:var(--red);
+
+  font-weight:500;
+}
+
+
+/* =========================================================
+   PROJECT / GRADE READOUT
+========================================================= */
+
+.grade-readout{
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:6px;
+
+  margin-top:2px;
+}
+
+.grade-chip{
+  background:rgba(255,255,255,0.035);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-sm);
+
+  padding:6px 8px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:1px;
+
+  transition:
+    background .25s ease,
+    border-color .25s ease;
+}
+
+.grade-chip .k{
+  font-size:0.6rem;
+  color:var(--text-2);
+}
+
+.grade-chip .v{
+  font-size:0.9rem;
+
+  font-weight:650;
+
+  color:var(--text-0);
+}
+
+.grade-chip.wide{
+  grid-column:1 / -1;
+}
+
+.grade-chip.status-pass{
+  border-color:
+    rgba(94,230,208,0.35);
+
+  background:
+    rgba(94,230,208,0.07);
+}
+
+.grade-chip.status-pass .v{
+  color:var(--cyan);
+}
+
+.grade-chip.status-fail{
+  border-color:
+    rgba(255,107,122,0.35);
+
+  background:
+    rgba(255,107,122,0.07);
+}
+
+.grade-chip.status-fail .v{
+  color:var(--red);
+}
+
+.fail-note{
+  font-size:0.66rem;
+
+  color:var(--red);
+
+  font-weight:500;
+
+  line-height:1.35;
+
+  display:none;
+}
+
+.fail-note.show{
+  display:block;
+}
+
+
+/* =========================================================
+   SEMESTER CGPA
+========================================================= */
+
+.sem-cgpa{
+  margin-top:auto;
+
+  padding-top:10px;
+
+  border-top:1px solid var(--border);
+
+  display:flex;
+
+  align-items:baseline;
+
+  justify-content:space-between;
+}
+
+.sem-cgpa .k{
+  font-size:0.68rem;
+
+  color:var(--text-2);
+
+  font-weight:500;
+}
+
+.sem-cgpa .v{
+  font-size:1.15rem;
+
+  font-weight:700;
+
+  font-variant-numeric:tabular-nums;
+
+  background:
+    linear-gradient(
+      120deg,
+      var(--violet),
+      var(--cyan)
+    );
+
+  -webkit-background-clip:text;
+
+  background-clip:text;
+
+  color:transparent;
+
+  transition:opacity .25s ease;
+}
+
+.sem-cgpa .v.empty{
+  background:none;
+
+  -webkit-text-fill-color:var(--text-2);
+
+  color:var(--text-2);
+
+  font-size:0.9rem;
+
+  font-weight:500;
+}
+
+
+/* =========================================================
+   FINAL RESULT
+========================================================= */
+
+.result-strip{
+  display:grid;
+
+  grid-template-columns:
+    1fr auto;
+
+  align-items:center;
+
+  gap:16px;
+
+  background:
+    linear-gradient(
+      120deg,
+      rgba(139,123,255,0.10),
+      rgba(94,230,208,0.07)
+    );
+
+  border:1px solid var(--border-strong);
+
+  border-radius:var(--radius-md);
+
+  padding:
+    clamp(14px,2vh,18px)
+    clamp(16px,2.2vw,24px);
+}
+
+.result-strip .info{
+  display:flex;
+
+  flex-direction:column;
+
+  gap:2px;
+}
+
+.result-strip .info .status{
+  font-size:0.68rem;
+
+  color:var(--text-2);
+
+  font-weight:500;
+
+  letter-spacing:0.01em;
+}
+
+.result-strip .info .caption{
+  font-size:0.92rem;
+
+  color:var(--text-1);
+
+  font-weight:500;
+}
+
+.final-num{
+  font-size:
+    clamp(
+      2.2rem,
+      4vw + 1rem,
+      3.4rem
+    );
+
+  font-weight:750;
+
+  line-height:1;
+
+  letter-spacing:-0.02em;
+
+  background:
+    linear-gradient(
+      120deg,
+      var(--violet),
+      var(--cyan)
+    );
+
+  -webkit-background-clip:text;
+
+  background-clip:text;
+
+  color:transparent;
+
+  font-variant-numeric:tabular-nums;
+
+  transition:
+    transform .35s cubic-bezier(.2,.8,.2,1),
+    opacity .35s ease;
+}
+
+.final-num.pulse{
+  transform:scale(1.06);
+}
+
+.final-num.dim{
+  background:none;
+
+  -webkit-text-fill-color:var(--text-2);
+
+  color:var(--text-2);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+  text-align:center;
+
+  font-size:0.65rem;
+
+  color:var(--text-2);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:980px){
+
+  .main-grid{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+}
+
+@media(max-width:560px){
+
+  body{
+    align-items:flex-start;
+
+    padding:
+      14px 12px;
+  }
+
+  .shell{
+    border-radius:18px;
+
+    padding:
+      16px 14px;
+
+    gap:14px;
+  }
+
+  .main-grid{
+    grid-template-columns:1fr;
+
+    gap:10px;
+  }
+
+  .result-strip{
+    grid-template-columns:1fr;
+
+    text-align:left;
+
+    gap:8px;
+  }
+
+  header{
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:2px;
+  }
+}
+
+::selection{
+  background:rgba(139,123,255,0.35);
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="bg"></div>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+
+<main class="shell">
+
+  <!-- HEADER -->
+  <header>
+
+    <h1>
+      SGPA → CGPA
+    </h1>
+
+    <p>
+      Academic Performance Calculator
+    </p>
+
+  </header>
+
+
+  <!-- =====================================================
+       SEMESTER CARDS
+  ====================================================== -->
+
+  <section
+    class="main-grid"
+    aria-label="Semester inputs"
+  >
+
+
+    <!-- ===================================================
+         SEMESTER 1
+    ==================================================== -->
+
+    <div
+      class="card"
+      id="card-1"
+    >
+
+      <div class="card-head">
+
+        <span class="label">
+          Semester 1
+        </span>
+
+        <span
+          class="credits"
+          id="credits-display-1"
+        >
+          20 credits
+        </span>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="sem1">
+          Enter SGPA
+        </label>
+
+        <div class="input-wrap">
+
+          <input
+            type="number"
+            id="sem1"
+            min="0"
+            max="10"
+            step="0.01"
+            placeholder="8.20"
+            inputmode="decimal"
+            aria-describedby="hint-1"
+          >
+
+        </div>
+
+        <div
+          class="hint"
+          id="hint-1"
+        ></div>
+
+      </div>
+
+
+      <div class="sem-cgpa">
+
+        <span class="k">
+          Sem 1 CGPA
+        </span>
+
+        <span
+          class="v empty"
+          id="out-1"
+        >
+          —
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ===================================================
+         SEMESTER 2
+    ==================================================== -->
+
+    <div
+      class="card"
+      id="card-2"
+    >
+
+      <div class="card-head">
+
+        <span class="label">
+          Semester 2
+        </span>
+
+        <span
+          class="credits"
+          id="credits-display-2"
+        >
+          22 credits
+        </span>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="sem2">
+          Enter SGPA
+        </label>
+
+        <div class="input-wrap">
+
+          <input
+            type="number"
+            id="sem2"
+            min="0"
+            max="10"
+            step="0.01"
+            placeholder="8.60"
+            inputmode="decimal"
+            aria-describedby="hint-2"
+          >
+
+        </div>
+
+        <div
+          class="hint"
+          id="hint-2"
+        ></div>
+
+      </div>
+
+
+      <div class="sem-cgpa">
+
+        <span class="k">
+          Sem 2 CGPA
+        </span>
+
+        <span
+          class="v empty"
+          id="out-2"
+        >
+          —
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ===================================================
+         SEMESTER 3
+         PROJECT WORK
+    ==================================================== -->
+
+    <div
+      class="card"
+      id="card-3"
+    >
+
+      <div class="card-head">
+
+        <span class="label">
+          Semester 3 · Project Work
+        </span>
+
+        <span class="credits">
+          13 credits
+        </span>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="project3">
+          Enter Project Work Marks
+        </label>
+
+        <div class="input-wrap">
+
+          <input
+            type="number"
+            id="project3"
+            min="0"
+            max="100"
+            step="1"
+            placeholder="Enter marks out of 100"
+            inputmode="numeric"
+            aria-describedby="hint-3"
+          >
+
+          <span class="unit">
+            / 100
+          </span>
+
+        </div>
+
+        <div
+          class="hint"
+          id="hint-3"
+        ></div>
+
+      </div>
+
+
+      <div class="grade-readout">
+
+        <div
+          class="grade-chip"
+          id="chip-grade-3"
+        >
+
+          <span class="k">
+            Grade
+          </span>
+
+          <span
+            class="v"
+            id="proj-grade-3"
+          >
+            —
+          </span>
+
+        </div>
+
+
+        <div
+          class="grade-chip"
+          id="chip-point-3"
+        >
+
+          <span class="k">
+            Grade Point
+          </span>
+
+          <span
+            class="v"
+            id="proj-point-3"
+          >
+            —
+          </span>
+
+        </div>
+
+
+        <div
+          class="grade-chip wide"
+          id="chip-status-3"
+        >
+
+          <span class="k">
+            Status
+          </span>
+
+          <span
+            class="v"
+            id="proj-status-3"
+          >
+            —
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="fail-note"
+        id="fail-note-3"
+      >
+        Project Work not passed — Semester 3 CGPA pending.
+      </div>
+
+
+      <div class="sem-cgpa">
+
+        <span class="k">
+          Sem 3 CGPA
+        </span>
+
+        <span
+          class="v empty"
+          id="out-3"
+        >
+          —
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ===================================================
+         SEMESTER 4
+         SAME AS SEMESTER 3
+    ==================================================== -->
+
+    <div
+      class="card"
+      id="card-4"
+    >
+
+      <div class="card-head">
+
+        <span class="label">
+          Semester 4 · Project Work
+        </span>
+
+        <span class="credits">
+          13 credits
+        </span>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="project4">
+          Enter Project Work Marks
+        </label>
+
+        <div class="input-wrap">
+
+          <input
+            type="number"
+            id="project4"
+            min="0"
+            max="100"
+            step="1"
+            placeholder="Enter marks out of 100"
+            inputmode="numeric"
+            aria-describedby="hint-4"
+          >
+
+          <span class="unit">
+            / 100
+          </span>
+
+        </div>
+
+        <div
+          class="hint"
+          id="hint-4"
+        ></div>
+
+      </div>
+
+
+      <div class="grade-readout">
+
+        <div
+          class="grade-chip"
+          id="chip-grade-4"
+        >
+
+          <span class="k">
+            Grade
+          </span>
+
+          <span
+            class="v"
+            id="proj-grade-4"
+          >
+            —
+          </span>
+
+        </div>
+
+
+        <div
+          class="grade-chip"
+          id="chip-point-4"
+        >
+
+          <span class="k">
+            Grade Point
+          </span>
+
+          <span
+            class="v"
+            id="proj-point-4"
+          >
+            —
+          </span>
+
+        </div>
+
+
+        <div
+          class="grade-chip wide"
+          id="chip-status-4"
+        >
+
+          <span class="k">
+            Status
+          </span>
+
+          <span
+            class="v"
+            id="proj-status-4"
+          >
+            —
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="fail-note"
+        id="fail-note-4"
+      >
+        Project Work not passed — Final CGPA pending.
+      </div>
+
+
+      <div class="sem-cgpa">
+
+        <span class="k">
+          Sem 4 CGPA
+        </span>
+
+        <span
+          class="v empty"
+          id="out-4"
+        >
+          —
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       FINAL RESULT
+  ====================================================== -->
+
+  <section
+    class="result-strip"
+    aria-live="polite"
+  >
+
+    <div class="info">
+
+      <span
+        class="status"
+        id="result-status"
+      >
+        No data yet
+      </span>
+
+      <span
+        class="caption"
+        id="result-caption"
+      >
+        Enter Semester 1 SGPA to begin
+      </span>
+
+    </div>
+
+
+    <span
+      class="final-num dim"
+      id="final-cgpa"
+    >
+      0.00
+    </span>
+
+  </section>
+
+
+  <footer>
+    Credit-weighted CGPA Calculator
+  </footer>
+
+</main>
+
+
+
+<script>
+(function(){
+
+  'use strict';
+
+
+  /* =========================================================
+     CREDIT CONFIGURATION
+
+     Semester 3 Project Work = 13 credits
+     Semester 4 Project Work = 13 credits
+  ========================================================= */
+
+  const SEM1_CREDITS = 20;
+
+  const SEM2_CREDITS = 22;
+
+  const SEM3_PROJECT_CREDITS = 13;
+
+  const SEM4_PROJECT_CREDITS = 13;
+
+
+  /* =========================================================
+     PROJECT GRADING SYSTEM
+
+     90+   → O  → 10
+     80-89 → A+ → 9
+     70-79 → A  → 8
+     60-69 → B+ → 7
+     50-59 → B  → 6
+     <50   → FAIL
+  ========================================================= */
+
+  const GRADE_TABLE = [
+
+    {
+      min:90,
+      max:100,
+      grade:'O',
+      desc:'Outstanding',
+      point:10
+    },
+
+    {
+      min:80,
+      max:89,
+      grade:'A+',
+      desc:'Excellent',
+      point:9
+    },
+
+    {
+      min:70,
+      max:79,
+      grade:'A',
+      desc:'Very Good',
+      point:8
+    },
+
+    {
+      min:60,
+      max:69,
+      grade:'B+',
+      desc:'Good',
+      point:7
+    },
+
+    {
+      min:50,
+      max:59,
+      grade:'B',
+      desc:'Above Average',
+      point:6
+    }
+
+  ];
+
+
+  const PROJECT_PASS_MIN = 50;
+
+
+  /* =========================================================
+     ELEMENT REFERENCES
+  ========================================================= */
+
+  const el = {
+
+    sem1:
+      document.getElementById('sem1'),
+
+    sem2:
+      document.getElementById('sem2'),
+
+    project3:
+      document.getElementById('project3'),
+
+    project4:
+      document.getElementById('project4'),
+
+
+    hint1:
+      document.getElementById('hint-1'),
+
+    hint2:
+      document.getElementById('hint-2'),
+
+    hint3:
+      document.getElementById('hint-3'),
+
+    hint4:
+      document.getElementById('hint-4'),
+
+
+    out1:
+      document.getElementById('out-1'),
+
+    out2:
+      document.getElementById('out-2'),
+
+    out3:
+      document.getElementById('out-3'),
+
+    out4:
+      document.getElementById('out-4'),
+
+
+    projGrade3:
+      document.getElementById('proj-grade-3'),
+
+    projPoint3:
+      document.getElementById('proj-point-3'),
+
+    projStatus3:
+      document.getElementById('proj-status-3'),
+
+    chipGrade3:
+      document.getElementById('chip-grade-3'),
+
+    chipPoint3:
+      document.getElementById('chip-point-3'),
+
+    chipStatus3:
+      document.getElementById('chip-status-3'),
+
+    failNote3:
+      document.getElementById('fail-note-3'),
+
+
+    projGrade4:
+      document.getElementById('proj-grade-4'),
+
+    projPoint4:
+      document.getElementById('proj-point-4'),
+
+    projStatus4:
+      document.getElementById('proj-status-4'),
+
+    chipGrade4:
+      document.getElementById('chip-grade-4'),
+
+    chipPoint4:
+      document.getElementById('chip-point-4'),
+
+    chipStatus4:
+      document.getElementById('chip-status-4'),
+
+    failNote4:
+      document.getElementById('fail-note-4'),
+
+
+    finalNum:
+      document.getElementById('final-cgpa'),
+
+    resultStatus:
+      document.getElementById('result-status'),
+
+    resultCaption:
+      document.getElementById('result-caption')
+
+  };
+
+
+  /* =========================================================
+     VALIDATE SGPA
+  ========================================================= */
+
+  function validateSGPA(inputEl, hintEl){
+
+    const raw =
+      inputEl.value.trim();
+
+
+    inputEl.classList.remove('error');
+
+    hintEl.textContent = '';
+
+
+    if(raw === ''){
+      return null;
+    }
+
+
+    const num =
+      Number(raw);
+
+
+    if(Number.isNaN(num)){
+
+      inputEl.classList.add('error');
+
+      hintEl.textContent =
+        'Enter a valid number';
+
+      return null;
+    }
+
+
+    if(num < 0 || num > 10){
+
+      inputEl.classList.add('error');
+
+      hintEl.textContent =
+        'Enter an SGPA between 0.00 and 10.00';
+
+      return null;
+    }
+
+
+    return num;
+  }
+
+
+  /* =========================================================
+     VALIDATE PROJECT MARKS
+  ========================================================= */
+
+  function validateProjectMarks(
+    inputEl,
+    hintEl
+  ){
+
+    const raw =
+      inputEl.value.trim();
+
+
+    inputEl.classList.remove('error');
+
+    hintEl.textContent = '';
+
+
+    if(raw === ''){
+      return null;
+    }
+
+
+    const num =
+      Number(raw);
+
+
+    if(Number.isNaN(num)){
+
+      inputEl.classList.add('error');
+
+      hintEl.textContent =
+        'Enter a valid number';
+
+      return null;
+    }
+
+
+    if(num < 0 || num > 100){
+
+      inputEl.classList.add('error');
+
+      hintEl.textContent =
+        'Enter marks between 0 and 100';
+
+      return null;
+    }
+
+
+    return num;
+  }
+
+
+  /* =========================================================
+     PROJECT GRADE CALCULATOR
+  ========================================================= */
+
+  function calculateProjectGrade(marks){
+
+    /*
+      Below 50 = FAIL
+
+      IMPORTANT:
+      Do not assign grade point 0.
+    */
+
+    if(marks < PROJECT_PASS_MIN){
+
+      return {
+
+        grade:'F',
+
+        desc:'Fail',
+
+        point:null,
+
+        passed:false
+
+      };
+
+    }
+
+
+    for(const row of GRADE_TABLE){
+
+      if(
+        marks >= row.min &&
+        marks <= row.max
+      ){
+
+        return {
+
+          grade:row.grade,
+
+          desc:row.desc,
+
+          point:row.point,
+
+          passed:true
+
+        };
+
+      }
+
+    }
+
+
+    return {
+
+      grade:'F',
+
+      desc:'Fail',
+
+      point:null,
+
+      passed:false
+
+    };
+
+  }
+
+
+  /* =========================================================
+     CREDIT-WEIGHTED CGPA
+
+     CGPA = Σ(Ci × Gi) / ΣCi
+  ========================================================= */
+
+  function weightedCGPA(entries){
+
+    let weightedSum = 0;
+
+    let totalCredits = 0;
+
+
+    for(const entry of entries){
+
+      weightedSum +=
+        entry.credits *
+        entry.grade;
+
+      totalCredits +=
+        entry.credits;
+
+    }
+
+
+    if(totalCredits === 0){
+
+      return null;
+
+    }
+
+
+    return weightedSum /
+      totalCredits;
+
+  }
+
+
+  /* =========================================================
+     SEMESTER 1 CGPA
+  ========================================================= */
+
+  function calculateSemester1CGPA(s1){
+
+    if(s1 === null){
+
+      return null;
+
+    }
+
+
+    return weightedCGPA([
+
+      {
+        credits:SEM1_CREDITS,
+        grade:s1
+      }
+
+    ]);
+
+  }
+
+
+  /* =========================================================
+     SEMESTER 2 CGPA
+  ========================================================= */
+
+  function calculateSemester2CGPA(
+    s1,
+    s2
+  ){
+
+    if(
+      s1 === null ||
+      s2 === null
+    ){
+
+      return null;
+
+    }
+
+
+    return weightedCGPA([
+
+      {
+        credits:SEM1_CREDITS,
+        grade:s1
+      },
+
+      {
+        credits:SEM2_CREDITS,
+        grade:s2
+      }
+
+    ]);
+
+  }
+
+
+  /* =========================================================
+     SEMESTER 3 CGPA
+
+     Sem 3 contains only Project Work.
+
+     Project Work = 13 credits
+  ========================================================= */
+
+  function calculateSemester3CGPA(
+    s1,
+    s2,
+    s3
+  ){
+
+    if(
+      s1 === null ||
+      s2 === null ||
+      s3 === null
+    ){
+
+      return null;
+
+    }
+
+
+    return weightedCGPA([
+
+      {
+        credits:SEM1_CREDITS,
+        grade:s1
+      },
+
+      {
+        credits:SEM2_CREDITS,
+        grade:s2
+      },
+
+      {
+        credits:SEM3_PROJECT_CREDITS,
+        grade:s3
+      }
+
+    ]);
+
+  }
+
+
+  /* =========================================================
+     SEMESTER 4 CGPA
+
+     Sem 4 also contains Project Work.
+
+     Project Work = 13 credits
+  ========================================================= */
+
+  function calculateSemester4CGPA(
+    s1,
+    s2,
+    s3,
+    s4
+  ){
+
+    if(
+      s1 === null ||
+      s2 === null ||
+      s3 === null ||
+      s4 === null
+    ){
+
+      return null;
+
+    }
+
+
+    return weightedCGPA([
+
+      {
+        credits:SEM1_CREDITS,
+        grade:s1
+      },
+
+      {
+        credits:SEM2_CREDITS,
+        grade:s2
+      },
+
+      {
+        credits:SEM3_PROJECT_CREDITS,
+        grade:s3
+      },
+
+      {
+        credits:SEM4_PROJECT_CREDITS,
+        grade:s4
+      }
+
+    ]);
+
+  }
+
+
+  /* =========================================================
+     ANIMATION
+  ========================================================= */
+
+  function pulse(element){
+
+    element.classList.remove('pulse');
+
+    void element.offsetWidth;
+
+    element.classList.add('pulse');
+
+
+    setTimeout(
+      () => {
+        element.classList.remove('pulse');
+      },
+      350
+    );
+
+  }
+
+
+  /* =========================================================
+     SEMESTER OUTPUT
+  ========================================================= */
+
+  function setSemOutput(
+    outputElement,
+    value
+  ){
+
+    if(value === null){
+
+      outputElement.textContent = '—';
+
+      outputElement.classList.add('empty');
+
+      return;
+
+    }
+
+
+    const formatted =
+      value.toFixed(2);
+
+
+    const changed =
+      outputElement.textContent !==
+      formatted;
+
+
+    outputElement.classList.remove(
+      'empty'
+    );
+
+
+    outputElement.textContent =
+      formatted;
+
+
+    if(changed){
+
+      pulse(outputElement);
+
+    }
+
+  }
+
+
+  /* =========================================================
+     UPDATE PROJECT UI
+  ========================================================= */
+
+  function updateProjectUI(
+    marks,
+    gradeElement,
+    pointElement,
+    statusElement,
+    gradeChip,
+    pointChip,
+    statusChip,
+    failNote
+  ){
+
+    gradeChip.classList.remove(
+      'status-pass',
+      'status-fail'
+    );
+
+    pointChip.classList.remove(
+      'status-pass',
+      'status-fail'
+    );
+
+    statusChip.classList.remove(
+      'status-pass',
+      'status-fail'
+    );
+
+    failNote.classList.remove(
+      'show'
+    );
+
+
+    if(marks === null){
+
+      gradeElement.textContent =
+        '—';
+
+      pointElement.textContent =
+        '—';
+
+      statusElement.textContent =
+        '—';
+
+      return null;
+
+    }
+
+
+    const result =
+      calculateProjectGrade(marks);
+
+
+    gradeElement.textContent =
+      result.grade;
+
+
+    pointElement.textContent =
+      result.point !== null
+        ? result.point
+        : '—';
+
+
+    statusElement.textContent =
+      result.passed
+        ? 'PASS'
+        : 'FAIL';
+
+
+    if(result.passed){
+
+      gradeChip.classList.add(
+        'status-pass'
+      );
+
+      pointChip.classList.add(
+        'status-pass'
+      );
+
+      statusChip.classList.add(
+        'status-pass'
+      );
+
+
+      return result.point;
+
+    }
+
+
+    gradeChip.classList.add(
+      'status-fail'
+    );
+
+    pointChip.classList.add(
+      'status-fail'
+    );
+
+    statusChip.classList.add(
+      'status-fail'
+    );
+
+    failNote.classList.add(
+      'show'
+    );
+
+
+    return null;
+
+  }
+
+
+  /* =========================================================
+     MAIN UPDATE
+  ========================================================= */
+
+  function updateUI(){
+
+    const s1 =
+      validateSGPA(
+        el.sem1,
+        el.hint1
+      );
+
+
+    const s2 =
+      validateSGPA(
+        el.sem2,
+        el.hint2
+      );
+
+
+    const marks3 =
+      validateProjectMarks(
+        el.project3,
+        el.hint3
+      );
+
+
+    const marks4 =
+      validateProjectMarks(
+        el.project4,
+        el.hint4
+      );
+
+
+    /* -----------------------------------------
+       SEMESTER 3 PROJECT
+    ----------------------------------------- */
+
+    const s3 =
+      updateProjectUI(
+
+        marks3,
+
+        el.projGrade3,
+        el.projPoint3,
+        el.projStatus3,
+
+        el.chipGrade3,
+        el.chipPoint3,
+        el.chipStatus3,
+
+        el.failNote3
+
+      );
+
+
+    /* -----------------------------------------
+       SEMESTER 4 PROJECT
+    ----------------------------------------- */
+
+    const s4 =
+      updateProjectUI(
+
+        marks4,
+
+        el.projGrade4,
+        el.projPoint4,
+        el.projStatus4,
+
+        el.chipGrade4,
+        el.chipPoint4,
+        el.chipStatus4,
+
+        el.failNote4
+
+      );
+
+
+    /* -----------------------------------------
+       CALCULATE CUMULATIVE CGPA
+    ----------------------------------------- */
+
+    const cgpa1 =
+      calculateSemester1CGPA(
+        s1
+      );
+
+
+    const cgpa2 =
+      calculateSemester2CGPA(
+        s1,
+        s2
+      );
+
+
+    const cgpa3 =
+      calculateSemester3CGPA(
+        s1,
+        s2,
+        s3
+      );
+
+
+    const cgpa4 =
+      calculateSemester4CGPA(
+        s1,
+        s2,
+        s3,
+        s4
+      );
+
+
+    /* -----------------------------------------
+       UPDATE SEMESTER RESULTS
+    ----------------------------------------- */
+
+    setSemOutput(
+      el.out1,
+      cgpa1
+    );
+
+
+    setSemOutput(
+      el.out2,
+      cgpa2
+    );
+
+
+    setSemOutput(
+      el.out3,
+      cgpa3
+    );
+
+
+    setSemOutput(
+      el.out4,
+      cgpa4
+    );
+
+
+    /* -----------------------------------------
+       CURRENT / FINAL CGPA
+    ----------------------------------------- */
+
+    let latest = null;
+
+
+    if(cgpa4 !== null){
+
+      latest = cgpa4;
+
+    }
+    else if(cgpa3 !== null){
+
+      latest = cgpa3;
+
+    }
+    else if(cgpa2 !== null){
+
+      latest = cgpa2;
+
+    }
+    else if(cgpa1 !== null){
+
+      latest = cgpa1;
+
+    }
+
+
+    /* -----------------------------------------
+       NO DATA
+    ----------------------------------------- */
+
+    if(latest === null){
+
+      el.finalNum.textContent =
+        '0.00';
+
+      el.finalNum.classList.add(
+        'dim'
+      );
+
+
+      el.resultStatus.textContent =
+        'No data yet';
+
+
+      if(
+        marks4 !== null &&
+        s4 === null
+      ){
+
+        el.resultCaption.textContent =
+          'Semester 4 Project Work not passed';
+
+      }
+      else if(
+        marks3 !== null &&
+        s3 === null
+      ){
+
+        el.resultCaption.textContent =
+          'Semester 3 Project Work not passed';
+
+      }
+      else{
+
+        el.resultCaption.textContent =
+          'Enter Semester 1 SGPA to begin';
+
+      }
+
+
+      return;
+
+    }
+
+
+    /* -----------------------------------------
+       DISPLAY CURRENT CGPA
+    ----------------------------------------- */
+
+    el.finalNum.classList.remove(
+      'dim'
+    );
+
+
+    const formatted =
+      latest.toFixed(2);
+
+
+    const changed =
+      el.finalNum.textContent !==
+      formatted;
+
+
+    el.finalNum.textContent =
+      formatted;
+
+
+    if(changed){
+
+      pulse(el.finalNum);
+
+    }
+
+
+    /* -----------------------------------------
+       FINAL RESULT STATUS
+    ----------------------------------------- */
+
+    if(cgpa4 !== null){
+
+      el.resultStatus.textContent =
+        'Final CGPA';
+
+
+      el.resultCaption.textContent =
+        'All four semesters completed';
+
+    }
+    else{
+
+      el.resultStatus.textContent =
+        'Current CGPA';
+
+
+      if(
+        marks4 !== null &&
+        s4 === null
+      ){
+
+        el.resultCaption.textContent =
+          'Semester 4 Project Work not passed — Final CGPA pending';
+
+      }
+      else if(
+        marks3 !== null &&
+        s3 === null
+      ){
+
+        el.resultCaption.textContent =
+          'Semester 3 Project Work not passed — Semester 3 CGPA pending';
+
+      }
+      else if(cgpa3 !== null){
+
+        el.resultCaption.textContent =
+          'Based on completed Semesters 1–3';
+
+      }
+      else if(cgpa2 !== null){
+
+        el.resultCaption.textContent =
+          'Based on completed Semesters 1–2';
+
+      }
+      else{
+
+        el.resultCaption.textContent =
+          'Based on Semester 1';
+
+      }
+
+    }
+
+  }
+
+
+  /* =========================================================
+     LIVE INPUT LISTENERS
+  ========================================================= */
+
+  [
+    el.sem1,
+    el.sem2,
+    el.project3,
+    el.project4
+
+  ].forEach(
+
+    input => {
+
+      input.addEventListener(
+        'input',
+        updateUI
+      );
+
+    }
+
+  );
+
+
+  /* =========================================================
+     INITIAL STATE
+  ========================================================= */
+
+  updateUI();
+
+})();
+</script>
+
+</body>
+</html>
