@@ -569,57 +569,6 @@ footer{
 }
 
 
-/* GPA Planner */
-.planner-grid{
-  display:grid;
-  grid-template-columns:1.05fr 1.4fr;
-  gap:14px;
-}
-.planner-card{padding:19px}
-.planner-title{display:flex;align-items:center;gap:9px;margin-bottom:6px}
-.planner-title h2{margin:0;font-size:1.12rem;letter-spacing:-.02em}
-.planner-subtitle{margin:0 0 16px;color:var(--muted);font-size:.75rem;line-height:1.5}
-.target-box{
-  padding:16px;
-  border:1px solid rgba(154,140,255,.2);
-  border-radius:17px;
-  background:linear-gradient(145deg,rgba(154,140,255,.09),rgba(99,234,215,.035));
-}
-.target-box label{margin-bottom:8px}
-.target-input{font-size:1.15rem}
-.planner-status{
-  margin-top:12px;
-  padding:11px 12px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  color:var(--muted);
-  background:rgba(0,0,0,.12);
-  font-size:.72rem;
-  line-height:1.45;
-}
-.planner-status.good{border-color:rgba(88,224,189,.28);color:#b8f7e7}
-.planner-status.warn{border-color:rgba(255,199,107,.28);color:#ffe0a8}
-.planner-status.bad{border-color:rgba(255,102,122,.28);color:#ffb2bd}
-.plan-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
-.plan-metric{padding:11px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.025)}
-.plan-metric span{display:block;color:var(--dim);font-size:.59rem;text-transform:uppercase;letter-spacing:.07em}
-.plan-metric strong{display:block;margin-top:4px;font-size:1rem}
-.planner-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:17px}
-.planner-table{width:100%;border-collapse:collapse;min-width:610px}
-.planner-table th,.planner-table td{padding:12px 13px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:.73rem}
-.planner-table th{color:var(--dim);font-size:.61rem;text-transform:uppercase;letter-spacing:.07em;background:rgba(255,255,255,.035)}
-.planner-table tr:last-child td{border-bottom:0}
-.planner-table tr.highlight td{background:rgba(99,234,215,.055)}
-.mark-pill{display:inline-flex;padding:5px 9px;border-radius:999px;border:1px solid rgba(99,234,215,.18);background:rgba(99,234,215,.06);font-weight:750}
-.need-box{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.025)}
-.need-box strong{font-size:1.05rem}
-.muted-small{color:var(--muted);font-size:.68rem;line-height:1.45}
-@media(max-width:900px){.planner-grid{grid-template-columns:1fr}}
-@media(max-width:650px){
-  .plan-metrics{grid-template-columns:1fr}
-  .planner-card{padding:15px}
-}
-
 @media(prefers-reduced-motion:reduce){
   .orb{animation:none}
   *{scroll-behavior:auto!important}
@@ -649,7 +598,6 @@ footer{
 <nav class="tabs" aria-label="Calculator tabs">
   <button class="tab-btn active" type="button" data-tab="calculatorTab">📊 Calculator</button>
   <button class="tab-btn" type="button" data-tab="predictorTab">🔮 GPA Predictor</button>
-  <!-- <button class="tab-btn" type="button" data-tab="plannerTab">🎯 Target Planner</button> -->
 </nav>
 
 <section id="calculatorTab" class="tab-panel active">
@@ -780,6 +728,7 @@ footer{
   <div>
     <div class="result-label" id="resultStatus">Current CGPA</div>
     <div class="result-caption" id="resultCaption">Enter your semester details to calculate.</div>
+    <div class="sync-note" id="formulaBreakdown">Sem 1–2 base = (Sem 1 SGPA + Sem 2 SGPA) ÷ 2 • Sem 3 & 4 use 13 credits each</div>
   </div>
 
   <div class="final">
@@ -847,62 +796,7 @@ footer{
   </div>
 </section>
 
-<section id="plannerTab" class="tab-panel">
-  <div class="planner-grid">
-    <div class="card planner-card">
-      <div class="planner-title"><span>🎯</span><h2>Target CGPA Calculator</h2></div>
-      <p class="planner-subtitle">Set your desired final CGPA. The planner uses your Sem 1, Sem 2 and Sem 3 values to calculate what you need in Sem 4.</p>
-
-      <div class="target-box">
-        <label for="targetCgpa">Desired Final CGPA</label>
-        <div class="input-wrap">
-          <input id="targetCgpa" class="target-input" type="number" min="0" max="10" step="0.01" value="8.00" placeholder="e.g. 8.00" inputmode="decimal">
-          <span class="unit">/ 10</span>
-        </div>
-        <div class="hint" id="targetHint"></div>
-      </div>
-
-      <div class="plan-metrics">
-        <div class="plan-metric"><span>Current CGPA</span><strong id="plannerCurrent">—</strong></div>
-        <div class="plan-metric"><span>Required Sem 4 GPA</span><strong id="requiredGpa">—</strong></div>
-        <div class="plan-metric"><span>Required Marks</span><strong id="requiredMarks">—</strong></div>
-      </div>
-
-      <div class="planner-status" id="plannerStatus">Enter valid Sem 1, Sem 2 and Sem 3 details to calculate your target.</div>
-      <div class="need-box">
-        <strong id="targetMessage">Your target plan will appear here.</strong>
-        <div class="muted-small" id="targetExplanation">Sem 4 has 13 credits, so every Sem 4 grade point changes the final CGPA accordingly.</div>
-      </div>
-    </div>
-
-    <div class="card planner-card">
-      <div class="planner-title"><span>📈</span><h2>Sem 4 Prediction</h2></div>
-      <p class="planner-subtitle">See the final CGPA for every possible Sem 4 Project marks range, using your current Sem 1–3 performance.</p>
-
-      <div class="planner-table-wrap">
-        <table class="planner-table">
-          <thead>
-            <tr>
-              <th>Sem 4 Marks</th>
-              <th>Grade</th>
-              <th>GPA</th>
-              <th>Final CGPA</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="sem4PredictionRows"></tbody>
-        </table>
-      </div>
-
-      <div class="need-box">
-        <strong>💡 Minimum marks for your target</strong>
-        <div class="muted-small" id="targetMarksDetail">Enter a target and complete Sem 1–3 details to see the minimum Sem 4 marks required.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>Credit-weighted CGPA • Updates instantly as you type</footer>
+<footer>CGPA Calculator • Updates instantly as you type</footer>
 
 </main>
 
@@ -1004,16 +898,19 @@ footer{
     return { grade:"O", point:10, pass:true };
   }
 
-  function weighted(entries) {
-    let points = 0;
-    let credits = 0;
+  // CGPA method used by this calculator:
+  // Sem 1 + Sem 2 are averaged normally (credits are not used).
+  // From Sem 3 onward, the 13-credit project is added to that base.
+  function sem12Base(s1, s2) {
+    const a = Number(s1);
+    const b = Number(s2);
+    if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+    return (a + b) / 2;
+  }
 
-    for (const item of entries) {
-      points += item.grade * item.credits;
-      credits += item.credits;
-    }
-
-    return credits ? points / credits : null;
+  function addProject(baseCgpa, projectPoint, completedCredits, projectCredits) {
+    if (!Number.isFinite(baseCgpa) || !Number.isFinite(projectPoint)) return null;
+    return ((baseCgpa * completedCredits) + (projectPoint * projectCredits)) / (completedCredits + projectCredits);
   }
 
   function setOutput(element, value) {
@@ -1134,43 +1031,36 @@ footer{
       "fail4","bar4","scale4"
     );
 
-    const cgpa1 =
-      s1 === null
-        ? null
-        : weighted([{grade:s1,credits:C1}]);
+    // IMPORTANT: SGPA is already a semester-level weighted average.
+    // Therefore cumulative CGPA is calculated by weighting each semester
+    // SGPA/grade-point by that semester's credits.
+    //
+    // Sem 1 CGPA = (S1 × 20) / 20
+    // Sem 2 CGPA = (S1 × 20 + S2 × 22) / 42
+    // Sem 3 CGPA = (S1 × 20 + S2 × 22 + G3 × 13) / 55
+    // Sem 4 CGPA = (S1 × 20 + S2 × 22 + G3 × 13 + G4 × 13) / 68
+    // F is G3/G4 = 0 and its 13 credits ARE included.
+    const cgpa1 = s1 === null ? null : s1;
 
+    // Sem 1 + Sem 2 = simple average, so 8.76 and 9.48 gives exactly 9.12.
     const cgpa2 =
       s1 === null || s2 === null
         ? null
-        : weighted([
-            {grade:s1,credits:C1},
-            {grade:s2,credits:C2}
-          ]);
+        : sem12Base(s1, s2);
 
-    /*
-      F = 0 grade points.
-      Even when a project is failed, its 13 credits are included
-      in the cumulative calculation, so the calculator shows the
-      actual CGPA/GPA impact immediately instead of leaving it blank.
-    */
+    const base12 = cgpa2;
+
+    // Sem 3 project is 13 credits, added to the 42-credit Sem 1+2 base.
     const cgpa3 =
-      s1 === null || s2 === null || g3 === null
+      base12 === null || g3 === null
         ? null
-        : weighted([
-            {grade:s1,credits:C1},
-            {grade:s2,credits:C2},
-            {grade:g3,credits:C3}
-          ]);
+        : addProject(base12, g3, C1 + C2, C3);
 
+    // Sem 4 project is another 13 credits.
     const cgpa4 =
-      s1 === null || s2 === null || g3 === null || g4 === null
+      cgpa3 === null || g4 === null
         ? null
-        : weighted([
-            {grade:s1,credits:C1},
-            {grade:s2,credits:C2},
-            {grade:g3,credits:C3},
-            {grade:g4,credits:C4}
-          ]);
+        : addProject(cgpa3, g4, C1 + C2 + C3, C4);
 
     setOutput($("out1"), cgpa1);
     setOutput($("out2"), cgpa2);
@@ -1215,14 +1105,14 @@ footer{
       No debounce, timeout or delayed grade calculation.
       The CGPA shown still includes F = 0 grade points.
     */
-    if (p4 !== null && g4 === null) {
+    if (p4 !== null && g4 === 0) {
       label = "Semester 4 Result";
-      caption = "FAIL — Semester 4 Project Work is below 50.";
-      current = cgpa3;
-    } else if (p3 !== null && g3 === null) {
+      caption = "FAIL — Semester 4 Project Work is below 50. F = 0 grade points, so the displayed CGPA includes the failure.";
+      current = cgpa4;
+    } else if (p3 !== null && g3 === 0) {
       label = "Semester 3 Result";
-      caption = "FAIL — Semester 3 Project Work is below 50.";
-      current = cgpa2;
+      caption = "FAIL — Semester 3 Project Work is below 50. F = 0 grade points, so the displayed CGPA includes the failure.";
+      current = cgpa3;
     }
 
     const finalEl = $("final");
@@ -1246,6 +1136,19 @@ footer{
 
     $("resultStatus").textContent = label;
     $("resultCaption").textContent = caption;
+
+    const formulaEl = $("formulaBreakdown");
+    if (cgpa4 !== null) {
+      formulaEl.textContent = `(${s1.toFixed(2)} × 20 + ${s2.toFixed(2)} × 22 + ${g3.toFixed(2)} × 13 + ${g4.toFixed(2)} × 13) ÷ 68 = ${cgpa4.toFixed(2)}`;
+    } else if (cgpa3 !== null) {
+      formulaEl.textContent = `(${s1.toFixed(2)} × 20 + ${s2.toFixed(2)} × 22 + ${g3.toFixed(2)} × 13) ÷ 55 = ${cgpa3.toFixed(2)}`;
+    } else if (cgpa2 !== null) {
+      formulaEl.textContent = `(${s1.toFixed(2)} × 20 + ${s2.toFixed(2)} × 22) ÷ 42 = ${cgpa2.toFixed(2)}`;
+    } else if (cgpa1 !== null) {
+      formulaEl.textContent = `(${s1.toFixed(2)} × 20) ÷ 20 = ${cgpa1.toFixed(2)}`;
+    } else {
+      formulaEl.textContent = "Sem 1–2 base = (Sem 1 SGPA + Sem 2 SGPA) ÷ 2 • Sem 3 & 4 use 13 credits each";
+    }
   }
 
   // Save entered data in the browser so it remains after refresh/close.
@@ -1289,7 +1192,7 @@ footer{
     });
   });
 
-  // ---------------- GPA Predictor + Target Planner ----------------
+  // ---------------- GPA Predictor ----------------
   const predictorRanges = [
     {range:"90–100", grade:"O", point:10, min:90, max:100, pass:true},
     {range:"80–89.99", grade:"A+", point:9, min:80, max:89.99, pass:true},
@@ -1303,7 +1206,7 @@ footer{
     const s1 = Number(inputs.s1.value);
     const s2 = Number(inputs.s2.value);
     if (!Number.isFinite(s1) || !Number.isFinite(s2) || s1 < 0 || s1 > 10 || s2 < 0 || s2 > 10) return null;
-    return {s1, s2};
+    return {s1, s2, base:sem12Base(s1, s2)};
   }
 
   function currentSem123() {
@@ -1317,22 +1220,14 @@ footer{
   function predictorCgpa(point) {
     const base = currentSem12();
     if (!base) return null;
-    return weighted([
-      {grade:base.s1, credits:C1},
-      {grade:base.s2, credits:C2},
-      {grade:point, credits:C3}
-    ]);
+    return addProject(base.base, point, C1 + C2, C3);
   }
 
   function finalCgpa(point4) {
     const base = currentSem123();
     if (!base) return null;
-    return weighted([
-      {grade:base.s1, credits:C1},
-      {grade:base.s2, credits:C2},
-      {grade:base.g3.point, credits:C3},
-      {grade:point4, credits:C4}
-    ]);
+    const after3 = addProject(base.base, base.g3.point, C1 + C2, C3);
+    return addProject(after3, point4, C1 + C2 + C3, C4);
   }
 
   function renderPredictor() {
@@ -1345,10 +1240,7 @@ footer{
       baseEl.textContent = "—";
       syncEl.textContent = "Enter valid Sem 1 and Sem 2 SGPA in the Calculator tab to activate predictions.";
     } else {
-      const baseCgpa = weighted([
-        {grade:base.s1, credits:C1},
-        {grade:base.s2, credits:C2}
-      ]);
+      const baseCgpa = base.base;
       baseEl.textContent = baseCgpa.toFixed(2);
       syncEl.textContent = `Using Sem 1: ${base.s1.toFixed(2)} • Sem 2: ${base.s2.toFixed(2)} • 42 credits completed`;
     }
@@ -1407,108 +1299,6 @@ footer{
     details.textContent = `${marks} marks → ${result.grade} → Sem 3 GPA ${result.point.toFixed(2)} → ${result.pass ? "PASS" : "FAIL"}`;
   }
 
-  function readTargetCgpa() {
-    const input = $("targetCgpa");
-    const hint = $("targetHint");
-    const raw = input.value.trim();
-    input.classList.remove("invalid", "valid");
-    hint.textContent = "";
-    if (raw === "") return null;
-    const value = Number(raw);
-    if (!Number.isFinite(value) || value < 0 || value > 10) {
-      input.classList.add("invalid");
-      hint.textContent = "Target CGPA must be between 0.00 and 10.00.";
-      return null;
-    }
-    input.classList.add("valid");
-    return value;
-  }
-
-  function renderSem4Prediction() {
-    const rows = $("sem4PredictionRows");
-    const base = currentSem123();
-    if (!base) {
-      rows.innerHTML = `<tr><td colspan="5">Enter valid Sem 1, Sem 2 and Sem 3 details first.</td></tr>`;
-      return;
-    }
-
-    rows.innerHTML = predictorRanges.map(item => {
-      const cgpa = finalCgpa(item.point);
-      return `<tr>
-        <td><span class="range-badge">${item.range}</span></td>
-        <td><strong class="grade-pill">${item.grade}</strong></td>
-        <td><strong>${item.point.toFixed(2)}</strong></td>
-        <td><strong>${cgpa.toFixed(2)}</strong></td>
-        <td>${item.pass ? "PASS" : "FAIL"}</td>
-      </tr>`;
-    }).join("");
-  }
-
-  function updateTargetPlanner() {
-    const target = readTargetCgpa();
-    const currentEl = $("plannerCurrent");
-    const requiredEl = $("requiredGpa");
-    const marksEl = $("requiredMarks");
-    const statusEl = $("plannerStatus");
-    const messageEl = $("targetMessage");
-    const explanationEl = $("targetExplanation");
-    const detailEl = $("targetMarksDetail");
-
-    statusEl.classList.remove("good", "warn", "bad");
-    renderSem4Prediction();
-
-    const base = currentSem123();
-    if (!target || !base) {
-      currentEl.textContent = "—";
-      requiredEl.textContent = "—";
-      marksEl.textContent = "—";
-      statusEl.textContent = !target ? "Enter a valid target CGPA." : "Enter valid Sem 1, Sem 2 and Sem 3 details to calculate your target.";
-      messageEl.textContent = "Your target plan will appear here.";
-      explanationEl.textContent = "Sem 4 has 13 credits, so every Sem 4 grade point changes the final CGPA accordingly.";
-      detailEl.textContent = "Enter a target and complete Sem 1–3 details to see the minimum Sem 4 marks required.";
-      return;
-    }
-
-    const before4 = weighted([
-      {grade:base.s1, credits:C1},
-      {grade:base.s2, credits:C2},
-      {grade:base.g3.point, credits:C3}
-    ]);
-    const totalBefore4Points = base.s1*C1 + base.s2*C2 + base.g3.point*C3;
-    const required = (target * (C1+C2+C3+C4) - totalBefore4Points) / C4;
-    const finalWithRequired = Math.min(10, Math.max(0, required));
-    const currentFinalIfZero = finalCgpa(0);
-
-    currentEl.textContent = before4.toFixed(2);
-    requiredEl.textContent = required <= 0 ? "0.00" : required > 10 ? "Impossible" : required.toFixed(2);
-
-    // Find the lowest grade point whose final CGPA reaches the target.
-    const reachable = predictorRanges.slice().reverse().find(item => finalCgpa(item.point) >= target);
-
-    if (required <= 0) {
-      marksEl.textContent = "1+ (F)";
-      statusEl.classList.add("warn");
-      statusEl.textContent = `Your target ${target.toFixed(2)} is already above the required level after Sem 3. Mathematically, even F can keep the final CGPA at/above the target, but 50+ marks are needed to PASS Sem 4.`;
-      messageEl.textContent = `Target ${target.toFixed(2)} is already within reach.`;
-      explanationEl.textContent = `Sem 4 with 50 marks (B / 6 GPA) would still give ${finalCgpa(6).toFixed(2)} final CGPA.`;
-      detailEl.textContent = `Minimum mathematical marks: 1 (F). Minimum passing marks: 50.`;
-    } else if (required > 10) {
-      marksEl.textContent = "Not possible";
-      statusEl.classList.add("bad");
-      statusEl.textContent = `You would need ${required.toFixed(2)} GPA in Sem 4, but the maximum possible GPA is 10.00.`;
-      messageEl.textContent = `Target ${target.toFixed(2)} cannot be reached with the current Sem 1–3 performance.`;
-      explanationEl.textContent = `Even 100 marks (O / 10 GPA) gives a final CGPA of ${finalCgpa(10).toFixed(2)}.`;
-      detailEl.textContent = `Maximum possible final CGPA: ${finalCgpa(10).toFixed(2)}.`;
-    } else if (reachable) {
-      marksEl.textContent = `${reachable.min}+`;
-      statusEl.classList.add("good");
-      statusEl.textContent = `You need at least ${required.toFixed(2)} GPA mathematically. Because project grades are awarded in bands, ${reachable.min}+ marks (${reachable.grade} / ${reachable.point} GPA) is the minimum listed range that reaches your target.`;
-      messageEl.textContent = `Aim for ${reachable.min}+ marks in Sem 4 to reach ${target.toFixed(2)} CGPA.`;
-      explanationEl.textContent = `At ${reachable.min} marks, your projected final CGPA is ${finalCgpa(reachable.point).toFixed(2)}.`;
-      detailEl.textContent = `Required mathematical GPA: ${required.toFixed(2)} • Practical minimum mark range: ${reachable.min}–${reachable.max}.`;
-    }
-  }
-
   document.querySelectorAll(".tab-btn").forEach(button => {
     button.addEventListener("click", () => {
       document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
@@ -1516,29 +1306,15 @@ footer{
       button.classList.add("active");
       $(button.dataset.tab).classList.add("active");
       if (button.dataset.tab === "predictorTab") renderPredictor();
-      if (button.dataset.tab === "plannerTab") updateTargetPlanner();
     });
   });
 
   $("predictorMarks").addEventListener("input", updateCustomPredictor);
   $("predictorMarks").addEventListener("change", updateCustomPredictor);
-  $("targetCgpa").addEventListener("input", () => {
-    localStorage.setItem("sgpa_cgpa_target_v1", $("targetCgpa").value);
-    updateTargetPlanner();
-  });
-  $("targetCgpa").addEventListener("change", () => {
-    localStorage.setItem("sgpa_cgpa_target_v1", $("targetCgpa").value);
-    updateTargetPlanner();
-  });
-
-  const savedTarget = localStorage.getItem("sgpa_cgpa_target_v1");
-  if (savedTarget !== null) $("targetCgpa").value = savedTarget;
-
   const originalUpdate = update;
   update = function() {
     originalUpdate();
     renderPredictor();
-    updateTargetPlanner();
   };
 
   restoreData();
