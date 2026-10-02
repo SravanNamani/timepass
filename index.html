@@ -468,6 +468,91 @@ footer{
   font-size:.61rem;
 }
 
+
+/* Tabs */
+.tabs{
+  display:flex;
+  gap:8px;
+  padding:6px;
+  margin:0 0 20px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+}
+.tab-btn{
+  flex:1;
+  border:1px solid transparent;
+  border-radius:11px;
+  padding:11px 16px;
+  color:var(--muted);
+  background:transparent;
+  font:700 .82rem inherit;
+  cursor:pointer;
+  transition:.2s ease;
+}
+.tab-btn:hover{color:var(--text);background:rgba(255,255,255,.045)}
+.tab-btn.active{
+  color:var(--text);
+  border-color:var(--line-strong);
+  background:linear-gradient(135deg,rgba(154,140,255,.18),rgba(99,234,215,.08));
+  box-shadow:0 7px 20px rgba(0,0,0,.18);
+}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.predictor-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  margin-bottom:16px;
+}
+.predictor-copy h2{margin:0 0 5px;font-size:1.1rem}
+.predictor-copy p{margin:0;color:var(--muted);font-size:.76rem;line-height:1.5}
+.live-gpa{
+  min-width:190px;
+  padding:13px 15px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:rgba(255,255,255,.035);
+  text-align:right;
+}
+.live-gpa span{display:block;color:var(--dim);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em}
+.live-gpa strong{display:block;margin-top:3px;font-size:1.45rem}
+.predictor-card{padding:18px}
+.predictor-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:17px}
+.predictor-table{width:100%;border-collapse:collapse;min-width:650px}
+.predictor-table th,.predictor-table td{padding:13px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:.76rem}
+.predictor-table th{color:var(--dim);font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.035)}
+.predictor-table tr:last-child td{border-bottom:0}
+.predictor-table td strong{font-size:.9rem}
+.range-badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:rgba(154,140,255,.1);border:1px solid rgba(154,140,255,.2)}
+.grade-pill{font-weight:800}
+.custom-predictor{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:14px;
+  align-items:end;
+  margin-top:16px;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:rgba(255,255,255,.025);
+}
+.custom-predictor .input-wrap{margin-top:7px}
+.custom-result{min-width:220px;text-align:right}
+.custom-result small{display:block;color:var(--dim);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em}
+.custom-result strong{font-size:1.5rem}
+.custom-result .sub{display:block;color:var(--muted);font-size:.7rem;margin-top:2px}
+.sync-note{margin:10px 0 0;color:var(--dim);font-size:.66rem}
+@media(max-width:650px){
+  .tabs{overflow-x:auto}
+  .tab-btn{min-width:145px}
+  .predictor-head{align-items:flex-start;flex-direction:column}
+  .live-gpa{width:100%;text-align:left}
+  .custom-predictor{grid-template-columns:1fr}
+  .custom-result{text-align:left}
+}
+
 @media(max-width:1050px){
   .main-grid{grid-template-columns:repeat(2,1fr)}
 }
@@ -481,6 +566,58 @@ footer{
   .result{grid-template-columns:1fr}
   .final{text-align:left}
   .final-value{font-size:2.8rem}
+}
+
+
+/* GPA Planner */
+.planner-grid{
+  display:grid;
+  grid-template-columns:1.05fr 1.4fr;
+  gap:14px;
+}
+.planner-card{padding:19px}
+.planner-title{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.planner-title h2{margin:0;font-size:1.12rem;letter-spacing:-.02em}
+.planner-subtitle{margin:0 0 16px;color:var(--muted);font-size:.75rem;line-height:1.5}
+.target-box{
+  padding:16px;
+  border:1px solid rgba(154,140,255,.2);
+  border-radius:17px;
+  background:linear-gradient(145deg,rgba(154,140,255,.09),rgba(99,234,215,.035));
+}
+.target-box label{margin-bottom:8px}
+.target-input{font-size:1.15rem}
+.planner-status{
+  margin-top:12px;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  color:var(--muted);
+  background:rgba(0,0,0,.12);
+  font-size:.72rem;
+  line-height:1.45;
+}
+.planner-status.good{border-color:rgba(88,224,189,.28);color:#b8f7e7}
+.planner-status.warn{border-color:rgba(255,199,107,.28);color:#ffe0a8}
+.planner-status.bad{border-color:rgba(255,102,122,.28);color:#ffb2bd}
+.plan-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
+.plan-metric{padding:11px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.025)}
+.plan-metric span{display:block;color:var(--dim);font-size:.59rem;text-transform:uppercase;letter-spacing:.07em}
+.plan-metric strong{display:block;margin-top:4px;font-size:1rem}
+.planner-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:17px}
+.planner-table{width:100%;border-collapse:collapse;min-width:610px}
+.planner-table th,.planner-table td{padding:12px 13px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:.73rem}
+.planner-table th{color:var(--dim);font-size:.61rem;text-transform:uppercase;letter-spacing:.07em;background:rgba(255,255,255,.035)}
+.planner-table tr:last-child td{border-bottom:0}
+.planner-table tr.highlight td{background:rgba(99,234,215,.055)}
+.mark-pill{display:inline-flex;padding:5px 9px;border-radius:999px;border:1px solid rgba(99,234,215,.18);background:rgba(99,234,215,.06);font-weight:750}
+.need-box{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.025)}
+.need-box strong{font-size:1.05rem}
+.muted-small{color:var(--muted);font-size:.68rem;line-height:1.45}
+@media(max-width:900px){.planner-grid{grid-template-columns:1fr}}
+@media(max-width:650px){
+  .plan-metrics{grid-template-columns:1fr}
+  .planner-card{padding:15px}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -509,6 +646,13 @@ footer{
   <div class="header-pill">● Live Calculation</div>
 </header>
 
+<nav class="tabs" aria-label="Calculator tabs">
+  <button class="tab-btn active" type="button" data-tab="calculatorTab">📊 Calculator</button>
+  <button class="tab-btn" type="button" data-tab="predictorTab">🔮 GPA Predictor</button>
+  <!-- <button class="tab-btn" type="button" data-tab="plannerTab">🎯 Target Planner</button> -->
+</nav>
+
+<section id="calculatorTab" class="tab-panel active">
 <section class="main-grid">
 
   <article class="card">
@@ -632,7 +776,6 @@ footer{
 
 </section>
 
-
 <section class="result" aria-live="polite">
   <div>
     <div class="result-label" id="resultStatus">Current CGPA</div>
@@ -654,6 +797,110 @@ footer{
   <div class="guide"><b>50–59.99</b> · B · 6</div>
   <div class="guide"><b>1–49.99</b> · F</div>
 </div>
+
+</section>
+
+<section id="predictorTab" class="tab-panel">
+  <div class="predictor-head">
+    <div class="predictor-copy">
+      <h2>Sem 3 GPA Predictor</h2>
+      <p>Enter Sem 1 &amp; Sem 2 SGPA in the Calculator tab. This tab shows what CGPA you would get for each Sem 3 Project marks range.</p>
+      <div class="sync-note" id="predictorSync">Waiting for Sem 1 &amp; Sem 2 SGPA…</div>
+    </div>
+    <div class="live-gpa">
+      <span>Sem 1 + Sem 2 current CGPA</span>
+      <strong id="predictorBase">—</strong>
+    </div>
+  </div>
+
+  <div class="card predictor-card">
+    <div class="predictor-table-wrap">
+      <table class="predictor-table">
+        <thead>
+          <tr>
+            <th>Sem 3 Marks</th>
+            <th>Grade</th>
+            <th>Sem 3 GPA</th>
+            <th>CGPA after Sem 3</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="predictorRows"></tbody>
+      </table>
+    </div>
+
+    <div class="custom-predictor">
+      <div>
+        <label for="predictorMarks">Try exact Sem 3 marks</label>
+        <div class="input-wrap">
+          <input id="predictorMarks" type="number" min="1" max="100" step="1" placeholder="e.g. 76" inputmode="numeric">
+          <span class="unit">/ 100</span>
+        </div>
+        <div class="hint" id="predictorHint"></div>
+      </div>
+      <div class="custom-result">
+        <small>Predicted CGPA after Sem 3</small>
+        <strong id="customCgpa">—</strong>
+        <span class="sub" id="customDetails">Enter marks to see the result.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="plannerTab" class="tab-panel">
+  <div class="planner-grid">
+    <div class="card planner-card">
+      <div class="planner-title"><span>🎯</span><h2>Target CGPA Calculator</h2></div>
+      <p class="planner-subtitle">Set your desired final CGPA. The planner uses your Sem 1, Sem 2 and Sem 3 values to calculate what you need in Sem 4.</p>
+
+      <div class="target-box">
+        <label for="targetCgpa">Desired Final CGPA</label>
+        <div class="input-wrap">
+          <input id="targetCgpa" class="target-input" type="number" min="0" max="10" step="0.01" value="8.00" placeholder="e.g. 8.00" inputmode="decimal">
+          <span class="unit">/ 10</span>
+        </div>
+        <div class="hint" id="targetHint"></div>
+      </div>
+
+      <div class="plan-metrics">
+        <div class="plan-metric"><span>Current CGPA</span><strong id="plannerCurrent">—</strong></div>
+        <div class="plan-metric"><span>Required Sem 4 GPA</span><strong id="requiredGpa">—</strong></div>
+        <div class="plan-metric"><span>Required Marks</span><strong id="requiredMarks">—</strong></div>
+      </div>
+
+      <div class="planner-status" id="plannerStatus">Enter valid Sem 1, Sem 2 and Sem 3 details to calculate your target.</div>
+      <div class="need-box">
+        <strong id="targetMessage">Your target plan will appear here.</strong>
+        <div class="muted-small" id="targetExplanation">Sem 4 has 13 credits, so every Sem 4 grade point changes the final CGPA accordingly.</div>
+      </div>
+    </div>
+
+    <div class="card planner-card">
+      <div class="planner-title"><span>📈</span><h2>Sem 4 Prediction</h2></div>
+      <p class="planner-subtitle">See the final CGPA for every possible Sem 4 Project marks range, using your current Sem 1–3 performance.</p>
+
+      <div class="planner-table-wrap">
+        <table class="planner-table">
+          <thead>
+            <tr>
+              <th>Sem 4 Marks</th>
+              <th>Grade</th>
+              <th>GPA</th>
+              <th>Final CGPA</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="sem4PredictionRows"></tbody>
+        </table>
+      </div>
+
+      <div class="need-box">
+        <strong>💡 Minimum marks for your target</strong>
+        <div class="muted-small" id="targetMarksDetail">Enter a target and complete Sem 1–3 details to see the minimum Sem 4 marks required.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>Credit-weighted CGPA • Updates instantly as you type</footer>
 
@@ -1041,6 +1288,258 @@ footer{
       update();
     });
   });
+
+  // ---------------- GPA Predictor + Target Planner ----------------
+  const predictorRanges = [
+    {range:"90–100", grade:"O", point:10, min:90, max:100, pass:true},
+    {range:"80–89.99", grade:"A+", point:9, min:80, max:89.99, pass:true},
+    {range:"70–79.99", grade:"A", point:8, min:70, max:79.99, pass:true},
+    {range:"60–69.99", grade:"B+", point:7, min:60, max:69.99, pass:true},
+    {range:"50–59.99", grade:"B", point:6, min:50, max:59.99, pass:true},
+    {range:"1–49.99", grade:"F", point:0, min:1, max:49.99, pass:false}
+  ];
+
+  function currentSem12() {
+    const s1 = Number(inputs.s1.value);
+    const s2 = Number(inputs.s2.value);
+    if (!Number.isFinite(s1) || !Number.isFinite(s2) || s1 < 0 || s1 > 10 || s2 < 0 || s2 > 10) return null;
+    return {s1, s2};
+  }
+
+  function currentSem123() {
+    const base = currentSem12();
+    const p3 = Number(inputs.p3.value);
+    if (!base || !Number.isFinite(p3) || p3 < 1 || p3 > 100) return null;
+    const g3 = getProjectGrade(p3);
+    return { ...base, p3, g3 };
+  }
+
+  function predictorCgpa(point) {
+    const base = currentSem12();
+    if (!base) return null;
+    return weighted([
+      {grade:base.s1, credits:C1},
+      {grade:base.s2, credits:C2},
+      {grade:point, credits:C3}
+    ]);
+  }
+
+  function finalCgpa(point4) {
+    const base = currentSem123();
+    if (!base) return null;
+    return weighted([
+      {grade:base.s1, credits:C1},
+      {grade:base.s2, credits:C2},
+      {grade:base.g3.point, credits:C3},
+      {grade:point4, credits:C4}
+    ]);
+  }
+
+  function renderPredictor() {
+    const base = currentSem12();
+    const baseEl = $("predictorBase");
+    const syncEl = $("predictorSync");
+    const rows = $("predictorRows");
+
+    if (!base) {
+      baseEl.textContent = "—";
+      syncEl.textContent = "Enter valid Sem 1 and Sem 2 SGPA in the Calculator tab to activate predictions.";
+    } else {
+      const baseCgpa = weighted([
+        {grade:base.s1, credits:C1},
+        {grade:base.s2, credits:C2}
+      ]);
+      baseEl.textContent = baseCgpa.toFixed(2);
+      syncEl.textContent = `Using Sem 1: ${base.s1.toFixed(2)} • Sem 2: ${base.s2.toFixed(2)} • 42 credits completed`;
+    }
+
+    rows.innerHTML = predictorRanges.map(item => {
+      const cgpa = predictorCgpa(item.point);
+      return `<tr>
+        <td><span class="range-badge">${item.range}</span></td>
+        <td><strong class="grade-pill">${item.grade}</strong></td>
+        <td><strong>${item.point.toFixed(2)}</strong></td>
+        <td><strong>${cgpa === null ? "—" : cgpa.toFixed(2)}</strong></td>
+        <td>${item.pass ? "PASS" : "FAIL"}</td>
+      </tr>`;
+    }).join("");
+
+    updateCustomPredictor();
+  }
+
+  function updateCustomPredictor() {
+    const input = $("predictorMarks");
+    const hint = $("predictorHint");
+    const cgpaEl = $("customCgpa");
+    const details = $("customDetails");
+    const raw = input.value.trim();
+
+    input.classList.remove("invalid", "valid");
+    hint.textContent = "";
+
+    if (raw === "") {
+      cgpaEl.textContent = "—";
+      details.textContent = "Enter marks to see the result.";
+      return;
+    }
+
+    const marks = Number(raw);
+    if (!Number.isFinite(marks) || marks < 1 || marks > 100) {
+      input.classList.add("invalid");
+      hint.textContent = "Only marks from 1 to 100 are accepted.";
+      cgpaEl.textContent = "—";
+      details.textContent = "Invalid marks.";
+      return;
+    }
+
+    const base = currentSem12();
+    if (!base) {
+      hint.textContent = "Enter valid Sem 1 and Sem 2 SGPA first.";
+      cgpaEl.textContent = "—";
+      details.textContent = "Waiting for Sem 1 & Sem 2 SGPA.";
+      return;
+    }
+
+    input.classList.add("valid");
+    const result = getProjectGrade(marks);
+    const cgpa = predictorCgpa(result.point);
+    cgpaEl.textContent = cgpa.toFixed(2);
+    details.textContent = `${marks} marks → ${result.grade} → Sem 3 GPA ${result.point.toFixed(2)} → ${result.pass ? "PASS" : "FAIL"}`;
+  }
+
+  function readTargetCgpa() {
+    const input = $("targetCgpa");
+    const hint = $("targetHint");
+    const raw = input.value.trim();
+    input.classList.remove("invalid", "valid");
+    hint.textContent = "";
+    if (raw === "") return null;
+    const value = Number(raw);
+    if (!Number.isFinite(value) || value < 0 || value > 10) {
+      input.classList.add("invalid");
+      hint.textContent = "Target CGPA must be between 0.00 and 10.00.";
+      return null;
+    }
+    input.classList.add("valid");
+    return value;
+  }
+
+  function renderSem4Prediction() {
+    const rows = $("sem4PredictionRows");
+    const base = currentSem123();
+    if (!base) {
+      rows.innerHTML = `<tr><td colspan="5">Enter valid Sem 1, Sem 2 and Sem 3 details first.</td></tr>`;
+      return;
+    }
+
+    rows.innerHTML = predictorRanges.map(item => {
+      const cgpa = finalCgpa(item.point);
+      return `<tr>
+        <td><span class="range-badge">${item.range}</span></td>
+        <td><strong class="grade-pill">${item.grade}</strong></td>
+        <td><strong>${item.point.toFixed(2)}</strong></td>
+        <td><strong>${cgpa.toFixed(2)}</strong></td>
+        <td>${item.pass ? "PASS" : "FAIL"}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  function updateTargetPlanner() {
+    const target = readTargetCgpa();
+    const currentEl = $("plannerCurrent");
+    const requiredEl = $("requiredGpa");
+    const marksEl = $("requiredMarks");
+    const statusEl = $("plannerStatus");
+    const messageEl = $("targetMessage");
+    const explanationEl = $("targetExplanation");
+    const detailEl = $("targetMarksDetail");
+
+    statusEl.classList.remove("good", "warn", "bad");
+    renderSem4Prediction();
+
+    const base = currentSem123();
+    if (!target || !base) {
+      currentEl.textContent = "—";
+      requiredEl.textContent = "—";
+      marksEl.textContent = "—";
+      statusEl.textContent = !target ? "Enter a valid target CGPA." : "Enter valid Sem 1, Sem 2 and Sem 3 details to calculate your target.";
+      messageEl.textContent = "Your target plan will appear here.";
+      explanationEl.textContent = "Sem 4 has 13 credits, so every Sem 4 grade point changes the final CGPA accordingly.";
+      detailEl.textContent = "Enter a target and complete Sem 1–3 details to see the minimum Sem 4 marks required.";
+      return;
+    }
+
+    const before4 = weighted([
+      {grade:base.s1, credits:C1},
+      {grade:base.s2, credits:C2},
+      {grade:base.g3.point, credits:C3}
+    ]);
+    const totalBefore4Points = base.s1*C1 + base.s2*C2 + base.g3.point*C3;
+    const required = (target * (C1+C2+C3+C4) - totalBefore4Points) / C4;
+    const finalWithRequired = Math.min(10, Math.max(0, required));
+    const currentFinalIfZero = finalCgpa(0);
+
+    currentEl.textContent = before4.toFixed(2);
+    requiredEl.textContent = required <= 0 ? "0.00" : required > 10 ? "Impossible" : required.toFixed(2);
+
+    // Find the lowest grade point whose final CGPA reaches the target.
+    const reachable = predictorRanges.slice().reverse().find(item => finalCgpa(item.point) >= target);
+
+    if (required <= 0) {
+      marksEl.textContent = "1+ (F)";
+      statusEl.classList.add("warn");
+      statusEl.textContent = `Your target ${target.toFixed(2)} is already above the required level after Sem 3. Mathematically, even F can keep the final CGPA at/above the target, but 50+ marks are needed to PASS Sem 4.`;
+      messageEl.textContent = `Target ${target.toFixed(2)} is already within reach.`;
+      explanationEl.textContent = `Sem 4 with 50 marks (B / 6 GPA) would still give ${finalCgpa(6).toFixed(2)} final CGPA.`;
+      detailEl.textContent = `Minimum mathematical marks: 1 (F). Minimum passing marks: 50.`;
+    } else if (required > 10) {
+      marksEl.textContent = "Not possible";
+      statusEl.classList.add("bad");
+      statusEl.textContent = `You would need ${required.toFixed(2)} GPA in Sem 4, but the maximum possible GPA is 10.00.`;
+      messageEl.textContent = `Target ${target.toFixed(2)} cannot be reached with the current Sem 1–3 performance.`;
+      explanationEl.textContent = `Even 100 marks (O / 10 GPA) gives a final CGPA of ${finalCgpa(10).toFixed(2)}.`;
+      detailEl.textContent = `Maximum possible final CGPA: ${finalCgpa(10).toFixed(2)}.`;
+    } else if (reachable) {
+      marksEl.textContent = `${reachable.min}+`;
+      statusEl.classList.add("good");
+      statusEl.textContent = `You need at least ${required.toFixed(2)} GPA mathematically. Because project grades are awarded in bands, ${reachable.min}+ marks (${reachable.grade} / ${reachable.point} GPA) is the minimum listed range that reaches your target.`;
+      messageEl.textContent = `Aim for ${reachable.min}+ marks in Sem 4 to reach ${target.toFixed(2)} CGPA.`;
+      explanationEl.textContent = `At ${reachable.min} marks, your projected final CGPA is ${finalCgpa(reachable.point).toFixed(2)}.`;
+      detailEl.textContent = `Required mathematical GPA: ${required.toFixed(2)} • Practical minimum mark range: ${reachable.min}–${reachable.max}.`;
+    }
+  }
+
+  document.querySelectorAll(".tab-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.remove("active"));
+      button.classList.add("active");
+      $(button.dataset.tab).classList.add("active");
+      if (button.dataset.tab === "predictorTab") renderPredictor();
+      if (button.dataset.tab === "plannerTab") updateTargetPlanner();
+    });
+  });
+
+  $("predictorMarks").addEventListener("input", updateCustomPredictor);
+  $("predictorMarks").addEventListener("change", updateCustomPredictor);
+  $("targetCgpa").addEventListener("input", () => {
+    localStorage.setItem("sgpa_cgpa_target_v1", $("targetCgpa").value);
+    updateTargetPlanner();
+  });
+  $("targetCgpa").addEventListener("change", () => {
+    localStorage.setItem("sgpa_cgpa_target_v1", $("targetCgpa").value);
+    updateTargetPlanner();
+  });
+
+  const savedTarget = localStorage.getItem("sgpa_cgpa_target_v1");
+  if (savedTarget !== null) $("targetCgpa").value = savedTarget;
+
+  const originalUpdate = update;
+  update = function() {
+    originalUpdate();
+    renderPredictor();
+    updateTargetPlanner();
+  };
 
   restoreData();
   update();
