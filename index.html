@@ -223,6 +223,8 @@ label{
   font-weight:550;
 }
 
+.field-note{color:var(--dim);font-weight:500;font-size:.6rem}
+
 .input-wrap{position:relative}
 
 input{
@@ -569,6 +571,10 @@ footer{
 }
 
 
+.direct-grid{grid-template-columns:repeat(4,1fr);margin-top:4px}
+@media(max-width:1050px){.direct-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.direct-grid{grid-template-columns:1fr}}
+
 @media(prefers-reduced-motion:reduce){
   .orb{animation:none}
   *{scroll-behavior:auto!important}
@@ -597,7 +603,8 @@ footer{
 
 <nav class="tabs" aria-label="Calculator tabs">
   <button class="tab-btn active" type="button" data-tab="calculatorTab">📊 Calculator</button>
-  <button class="tab-btn" type="button" data-tab="predictorTab">🔮 GPA Predictor</button>
+  <button class="tab-btn" type="button" data-tab="predictorTab">🔮 CGPA Predictor</button>
+  <button class="tab-btn" type="button" data-tab="directTab">🧮 SGPA → CGPA</button>
 </nav>
 
 <section id="calculatorTab" class="tab-panel active">
@@ -609,7 +616,7 @@ footer{
       <div class="credits">20 Credits</div>
     </div>
 
-    <label for="sem1">Enter SGPA</label>
+    <label for="sem1">Enter Sem 1 SGPA <span class="field-note">(Semester Grade Point Average)</span></label>
     <div class="input-wrap">
       <input id="sem1" type="number" min="0" max="10" step="0.01" placeholder="e.g. 8.20" inputmode="decimal">
     </div>
@@ -628,7 +635,7 @@ footer{
       <div class="credits">22 Credits</div>
     </div>
 
-    <label for="sem2">Enter SGPA</label>
+    <label for="sem2">Enter Sem 2 SGPA <span class="field-note">(Semester Grade Point Average)</span></label>
     <div class="input-wrap">
       <input id="sem2" type="number" min="0" max="10" step="0.01" placeholder="e.g. 8.60" inputmode="decimal">
     </div>
@@ -749,15 +756,72 @@ footer{
 
 </section>
 
+
+<section id="directTab" class="tab-panel">
+  <div class="predictor-head">
+    <div class="predictor-copy">
+      <h2>SGPA → CGPA Calculator</h2>
+      <p>Enter the <strong>SGPA</strong> of each completed semester directly. This tab calculates the overall <strong>CGPA</strong> using the normal average of the entered semester SGPAs.</p>
+      <div class="sync-note">Enter SGPA values only — these fields are not for CGPA.</div>
+    </div>
+    <div class="live-gpa">
+      <span>Overall CGPA</span>
+      <strong id="directCgpa">—</strong>
+    </div>
+  </div>
+
+  <section class="main-grid direct-grid">
+    <article class="card">
+      <div class="card-head"><div class="sem-title"><i class="sem-dot"></i>Semester 1</div></div>
+      <label for="direct1">Enter Semester 1 SGPA</label>
+      <div class="input-wrap"><input id="direct1" type="number" min="0" max="10" step="0.01" placeholder="e.g. 8.76" inputmode="decimal"></div>
+      <div class="hint" id="directHint1"></div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><div class="sem-title"><i class="sem-dot"></i>Semester 2</div></div>
+      <label for="direct2">Enter Semester 2 SGPA</label>
+      <div class="input-wrap"><input id="direct2" type="number" min="0" max="10" step="0.01" placeholder="e.g. 9.48" inputmode="decimal"></div>
+      <div class="hint" id="directHint2"></div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><div class="sem-title"><i class="sem-dot"></i>Semester 3</div></div>
+      <label for="direct3">Enter Semester 3 SGPA</label>
+      <div class="input-wrap"><input id="direct3" type="number" min="0" max="10" step="0.01" placeholder="e.g. 8.90" inputmode="decimal"></div>
+      <div class="hint" id="directHint3"></div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><div class="sem-title"><i class="sem-dot"></i>Semester 4</div></div>
+      <label for="direct4">Enter Semester 4 SGPA</label>
+      <div class="input-wrap"><input id="direct4" type="number" min="0" max="10" step="0.01" placeholder="e.g. 9.10" inputmode="decimal"></div>
+      <div class="hint" id="directHint4"></div>
+    </article>
+  </section>
+
+  <section class="result" aria-live="polite">
+    <div>
+      <div class="result-label">Overall CGPA</div>
+      <div class="result-caption" id="directCaption">Enter the SGPA for the semesters you have completed.</div>
+      <div class="sync-note" id="directFormula">CGPA = average of completed semester SGPAs</div>
+    </div>
+    <div class="final">
+      <small>CGPA</small>
+      <div class="final-value dim" id="directFinal">0.00</div>
+    </div>
+  </section>
+</section>
+
 <section id="predictorTab" class="tab-panel">
   <div class="predictor-head">
     <div class="predictor-copy">
-      <h2>Sem 3 GPA Predictor</h2>
-      <p>Enter Sem 1 &amp; Sem 2 SGPA in the Calculator tab. This tab shows what CGPA you would get for each Sem 3 Project marks range.</p>
+      <h2>Sem 3 CGPA Predictor</h2>
+      <p>Enter Sem 1 &amp; Sem 2 SGPA in the Calculator tab. This tab shows the <strong>predicted CGPA</strong> you would get for each Sem 3 Project marks range. The result shown here is CGPA, not SGPA.</p>
       <div class="sync-note" id="predictorSync">Waiting for Sem 1 &amp; Sem 2 SGPA…</div>
     </div>
     <div class="live-gpa">
-      <span>Sem 1 + Sem 2 current CGPA</span>
+      <span>Current CGPA after Sem 2</span>
       <strong id="predictorBase">—</strong>
     </div>
   </div>
@@ -769,7 +833,7 @@ footer{
           <tr>
             <th>Sem 3 Marks</th>
             <th>Grade</th>
-            <th>Sem 3 GPA</th>
+            <th>Sem 3 Grade Point</th>
             <th>CGPA after Sem 3</th>
             <th>Status</th>
           </tr>
@@ -796,7 +860,7 @@ footer{
   </div>
 </section>
 
-<footer>CGPA Calculator • Updates instantly as you type</footer>
+<footer>SGPA → CGPA Calculator • Updates instantly as you type</footer>
 
 </main>
 
@@ -913,6 +977,10 @@ footer{
     return ((baseCgpa * completedCredits) + (projectPoint * projectCredits)) / (completedCredits + projectCredits);
   }
 
+  function round2(value) {
+    return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+  }
+
   function setOutput(element, value) {
     if (value === null) {
       element.textContent = "—";
@@ -920,7 +988,7 @@ footer{
       return;
     }
 
-    const next = value.toFixed(2);
+    const next = round2(value).toFixed(2);
 
     if (element.textContent !== next) {
       element.classList.remove("empty");
@@ -1040,13 +1108,13 @@ footer{
     // Sem 3 CGPA = (S1 × 20 + S2 × 22 + G3 × 13) / 55
     // Sem 4 CGPA = (S1 × 20 + S2 × 22 + G3 × 13 + G4 × 13) / 68
     // F is G3/G4 = 0 and its 13 credits ARE included.
-    const cgpa1 = s1 === null ? null : s1;
+    const cgpa1 = s1 === null ? null : round2(s1);
 
     // Sem 1 + Sem 2 = simple average, so 8.76 and 9.48 gives exactly 9.12.
     const cgpa2 =
       s1 === null || s2 === null
         ? null
-        : sem12Base(s1, s2);
+        : round2(sem12Base(s1, s2));
 
     const base12 = cgpa2;
 
@@ -1054,13 +1122,13 @@ footer{
     const cgpa3 =
       base12 === null || g3 === null
         ? null
-        : addProject(base12, g3, C1 + C2, C3);
+        : round2(addProject(base12, g3, C1 + C2, C3));
 
     // Sem 4 project is another 13 credits.
     const cgpa4 =
       cgpa3 === null || g4 === null
         ? null
-        : addProject(cgpa3, g4, C1 + C2 + C3, C4);
+        : round2(addProject(cgpa3, g4, C1 + C2 + C3, C4));
 
     setOutput($("out1"), cgpa1);
     setOutput($("out2"), cgpa2);
@@ -1121,7 +1189,7 @@ footer{
       finalEl.textContent = "0.00";
       finalEl.classList.add("dim");
     } else {
-      const next = current.toFixed(2);
+      const next = round2(current).toFixed(2);
 
       if (finalEl.textContent !== next) {
         finalEl.classList.remove("dim");
@@ -1241,7 +1309,7 @@ footer{
       syncEl.textContent = "Enter valid Sem 1 and Sem 2 SGPA in the Calculator tab to activate predictions.";
     } else {
       const baseCgpa = base.base;
-      baseEl.textContent = baseCgpa.toFixed(2);
+      baseEl.textContent = round2(baseCgpa).toFixed(2);
       syncEl.textContent = `Using Sem 1: ${base.s1.toFixed(2)} • Sem 2: ${base.s2.toFixed(2)} • 42 credits completed`;
     }
 
@@ -1251,7 +1319,7 @@ footer{
         <td><span class="range-badge">${item.range}</span></td>
         <td><strong class="grade-pill">${item.grade}</strong></td>
         <td><strong>${item.point.toFixed(2)}</strong></td>
-        <td><strong>${cgpa === null ? "—" : cgpa.toFixed(2)}</strong></td>
+        <td><strong>${cgpa === null ? "—" : round2(cgpa).toFixed(2)}</strong></td>
         <td>${item.pass ? "PASS" : "FAIL"}</td>
       </tr>`;
     }).join("");
@@ -1295,9 +1363,71 @@ footer{
     input.classList.add("valid");
     const result = getProjectGrade(marks);
     const cgpa = predictorCgpa(result.point);
-    cgpaEl.textContent = cgpa.toFixed(2);
-    details.textContent = `${marks} marks → ${result.grade} → Sem 3 GPA ${result.point.toFixed(2)} → ${result.pass ? "PASS" : "FAIL"}`;
+    cgpaEl.textContent = round2(cgpa).toFixed(2);
+    details.textContent = `${marks} marks → ${result.grade} → Sem 3 Grade Point ${result.point.toFixed(2)} → ${result.pass ? "PASS" : "FAIL"}`;
   }
+
+  // ---------------- Direct SGPA → CGPA tab ----------------
+  const directInputs = [$("direct1"), $("direct2"), $("direct3"), $("direct4")];
+  const DIRECT_STORAGE_KEY = "sgpa_cgpa_direct_sgpa_v1";
+
+  function readDirectSgpa(input, hint) {
+    const raw = input.value.trim();
+    input.classList.remove("invalid", "valid");
+    hint.textContent = "";
+    if (raw === "") return null;
+    const value = Number(raw);
+    if (!Number.isFinite(value) || value < 0 || value > 10) {
+      input.classList.add("invalid");
+      hint.textContent = "SGPA must be between 0.00 and 10.00.";
+      return null;
+    }
+    input.classList.add("valid");
+    return value;
+  }
+
+  function updateDirectCgpa() {
+    const values = directInputs.map((input,i) => readDirectSgpa(input, $("directHint"+(i+1))));
+    const completed = values.filter(v => v !== null);
+    const cgpaEl = $("directCgpa");
+    const finalEl = $("directFinal");
+    const caption = $("directCaption");
+    const formula = $("directFormula");
+
+    if (!completed.length) {
+      cgpaEl.textContent = "—";
+      finalEl.textContent = "0.00";
+      finalEl.classList.add("dim");
+      caption.textContent = "Enter the SGPA for the semesters you have completed.";
+      formula.textContent = "CGPA = average of completed semester SGPAs";
+      return;
+    }
+
+    const cgpa = completed.reduce((sum,v) => sum + v, 0) / completed.length;
+    const rounded = round2(cgpa).toFixed(2);
+    cgpaEl.textContent = rounded;
+    finalEl.textContent = rounded;
+    finalEl.classList.remove("dim");
+    caption.textContent = `${completed.length} semester${completed.length === 1 ? "" : "s"} included in the CGPA calculation.`;
+    formula.textContent = `(${completed.map(v => v.toFixed(2)).join(" + ")}) ÷ ${completed.length} = ${rounded}`;
+
+    const data = directInputs.map(input => input.value);
+    localStorage.setItem(DIRECT_STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function restoreDirectData() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(DIRECT_STORAGE_KEY) || "null");
+      if (Array.isArray(saved)) saved.forEach((value,i) => { if (directInputs[i]) directInputs[i].value = value || ""; });
+    } catch(e) {}
+  }
+
+  directInputs.forEach(input => {
+    input.addEventListener("input", updateDirectCgpa);
+    input.addEventListener("change", updateDirectCgpa);
+  });
+  restoreDirectData();
+  updateDirectCgpa();
 
   document.querySelectorAll(".tab-btn").forEach(button => {
     button.addEventListener("click", () => {
@@ -1323,3 +1453,4 @@ footer{
 </script>
 </body>
 </html>
+
