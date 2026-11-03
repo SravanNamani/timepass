@@ -186,17 +186,6 @@
 
   footer{text-align:center;font-size:0.68rem;color:var(--text-2);}
 
-
-  /* ---------- access gate (reuses the shell glass style) ---------- */
-  [hidden]{display:none !important;}
-  .gate{max-width:460px;gap:14px;align-self:center;}
-  .gate-title{margin:0;font-size:clamp(1.1rem,1vw + 0.8rem,1.35rem);font-weight:650;letter-spacing:-0.01em;}
-  .gate-title.denied{color:var(--danger);}
-  .gate-title.granted{color:var(--accent);}
-  .gate-msg{margin:0;font-size:0.9rem;line-height:1.5;color:var(--text-1);}
-  footer .who{color:var(--text-1);}
-  footer .who strong{color:var(--accent);font-weight:600;}
-
   /* ---------- responsive ---------- */
   @media (max-height:700px) and (min-width:981px){
     body{padding:8px 16px;}
@@ -228,22 +217,104 @@
     }
   }
 </style>
+
+<style id="ui-refresh">
+:root{
+  --bg:#07110d;--surface:rgba(17,38,27,.76);--surface-2:rgba(22,48,34,.82);
+  --border:rgba(164,239,187,.16);--border-hover:rgba(164,239,187,.34);
+  --field:rgba(3,14,9,.56);--text-0:#f0fff4;--text-1:#b6d0bf;--text-2:#829e8d;
+  --accent:#83efad;--accent-soft:rgba(131,239,173,.13);
+  --danger:#ff9eaa;--danger-soft:rgba(255,158,170,.12);
+  --radius-lg:26px;--radius-md:19px;--radius-sm:13px;
+}
+body{
+  background:radial-gradient(ellipse at 12% 8%,rgba(42,160,94,.2),transparent 38%),
+  radial-gradient(ellipse at 90% 90%,rgba(24,105,67,.16),transparent 40%),
+  linear-gradient(145deg,#06100b,#0a1911 55%,#07110d);
+}
+.shell{
+  max-width:1160px;background:linear-gradient(145deg,rgba(20,43,31,.86),rgba(8,22,15,.84));
+  border:1px solid rgba(174,255,204,.18);border-radius:26px;
+  box-shadow:0 28px 90px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  padding:clamp(20px,3vw,38px);gap:clamp(18px,2.5vh,26px);
+}
+header{align-items:center}
+header h1{
+  font-size:clamp(1.55rem,2.4vw,2.15rem);letter-spacing:-.045em;
+  background:linear-gradient(100deg,#f3fff6,#a1f4bd 70%,#70dda0);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+header p{font-size:.88rem;letter-spacing:.01em}
+.main-grid{gap:clamp(12px,1.5vw,18px)}
+.card{
+  position:relative;overflow:hidden;border-radius:20px;
+  background:linear-gradient(155deg,rgba(28,55,40,.8),rgba(10,27,18,.76));
+  border:1px solid rgba(167,237,190,.15);padding:clamp(16px,2vw,22px);gap:14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+  transition:transform .2s ease,border-color .2s ease,background .2s ease;
+}
+.card::before{
+  content:"";position:absolute;inset:0 0 auto;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(128,240,173,.5),transparent);
+  pointer-events:none;
+}
+.card:hover{transform:translateY(-2px);border-color:var(--border-hover)}
+.card-head .label{font-size:.86rem;font-weight:700}
+.card-head .credits{
+  color:#a8d9ba;background:rgba(128,240,173,.07);
+  border-color:rgba(128,240,173,.15);padding:4px 9px;font-size:.68rem
+}
+.field label{font-size:.78rem;color:#b7d4c2}
+input[type="number"]{
+  min-height:50px;padding:12px 14px;font-size:1.04rem;border-radius:13px;
+  background:rgba(2,12,8,.52);border-color:rgba(178,238,196,.17);
+}
+input[type="number"]:focus{border-color:#80f0ad;box-shadow:0 0 0 4px rgba(128,240,173,.11)}
+.grade-chip{
+  padding:9px 10px;border-radius:12px;background:rgba(2,13,8,.28);
+  border-color:rgba(165,235,193,.12)
+}
+.grade-chip .k{font-size:.66rem}.grade-chip .v{font-size:1rem}
+.sem-cgpa{padding-top:13px;border-color:rgba(165,235,193,.12)}
+.sem-cgpa .k{color:#a9c5b4}.sem-cgpa .v{font-size:1.35rem;color:#dfffea}
+.result-strip{
+  position:relative;overflow:hidden;
+  background:linear-gradient(110deg,rgba(24,64,43,.8),rgba(15,39,28,.74));
+  border:1px solid rgba(128,240,173,.25);border-radius:22px;
+  padding:clamp(18px,2.5vw,28px);
+}
+.result-strip .status{color:#9de8b8;letter-spacing:.11em}
+.result-strip .caption{color:#c0d9c9}
+.final-num{font-size:clamp(2.8rem,5vw,4.2rem);color:#8af4b2;text-shadow:0 0 30px rgba(128,240,173,.12)}
+footer{color:#789786}
+@media(max-width:700px){
+  body{padding:12px;align-items:flex-start}
+  .shell{border-radius:22px;padding:18px 14px;gap:16px}
+  header{gap:6px}header p{font-size:.8rem}
+  .main-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .card{padding:13px 11px;gap:11px;border-radius:16px}
+  .card.project{grid-column:1/-1}
+  .card-head{align-items:flex-start}
+  .card-head .label{font-size:.8rem}
+  .card-head .credits{font-size:.61rem}
+  .grade-readout{gap:5px}.grade-chip{padding:7px 6px}
+  .grade-chip .k{font-size:.59rem}.grade-chip .v{font-size:.9rem}
+  .result-strip{gap:10px;padding:16px}
+  .result-strip .caption{font-size:.78rem;line-height:1.45}
+  .final-num{font-size:2.5rem;min-width:3.5ch}
+}
+@media(max-width:360px){
+  .main-grid{grid-template-columns:1fr}.card.project{grid-column:auto}
+  .result-strip{grid-template-columns:1fr}.final-num{text-align:left}
+}
+@media(prefers-reduced-motion:reduce){.card:hover{transform:none}}
+</style>
+
 </head>
 <body>
 
-<!-- ACCESS GATE: the calculator below stays hidden unless the name check passes -->
-<section class="shell gate" id="gate" aria-labelledby="gate-title">
-  <header class="reveal" style="--i:0">
-    <h1>SGPA → CGPA</h1>
-  </header>
-  <div class="reveal" style="--i:1" role="status" aria-live="polite">
-    <h2 class="gate-title" id="gate-title">Access restricted</h2>
-    <p class="gate-msg" id="gate-msg">This calculator is restricted.</p>
-  </div>
-  <noscript><p class="gate-msg">JavaScript is required to use this calculator.</p></noscript>
-</section>
-
-<main class="shell" id="app" hidden>
+<main class="shell">
 
   <header class="reveal" style="--i:0">
     <h1>SGPA → CGPA</h1>
@@ -352,100 +423,9 @@
   <!-- announced once per change (the animated number above is hidden from screen readers) -->
   <div class="sr-only" id="sr-status" aria-live="polite"></div>
 
-  <footer>Credit-weighted CGPA Calculator · <span class="who">Access: <strong id="footer-name">—</strong></span></footer>
+  <footer>Credit-weighted CGPA Calculator</footer>
 
 </main>
-
-<script>
-(function () {
-  'use strict';
-
-  /* =========================================================
-     NAME-BASED ACCESS RESTRICTION  (basic, client-side only)
-
-     IMPORTANT: this is NOT secure authentication, and it does NOT identify a
-     specific laptop or phone. The page never asks the visitor for a name and
-     never inspects the device or browser. The name comes from the link that
-     was opened (…/?name=YourName) and is remembered in this browser's
-     localStorage so later visits work without the link.
-     Because this page is public on GitHub Pages, anyone can read the
-     allowlist below in the page source, learn an allowed name, and open the
-     page with it; they can also simply edit the page or its JavaScript. Use
-     this only as a convenience filter, never to protect anything sensitive.
-     ========================================================= */
-
-  /* ---------------------------------------------------------
-     ADD ALLOWED NAMES
-     Edit ONLY this list. One quoted name per entry, separated by commas.
-     Case and extra spaces are ignored. Removing a name here also blocks
-     browsers that had remembered it (checked on their next visit).
-     An empty list means nobody is allowed in.
-  --------------------------------------------------------- */
-  const ALLOWED_NAMES = ["Sravan"];
-  /* ------------------------ end of allowed names ------------------------ */
-
-  const STORAGE_KEY = 'gpa-calculator-access-name';
-  const URL_PARAM = 'name';
-
-  const $ = (id) => document.getElementById(id);
-
-  function normalize(text) {
-    return String(text).replace(/\s+/g, ' ').trim().toLowerCase();
-  }
-
-  // Returns the allowlist's own spelling of the name, or null if not allowed.
-  function findAllowedName(candidate) {
-    if (candidate === null || candidate === undefined) return null;
-    const wanted = normalize(candidate);
-    if (wanted === '') return null;
-    for (const name of ALLOWED_NAMES) {
-      if (normalize(name) === wanted) return name;
-    }
-    return null;
-  }
-
-  // localStorage can be unavailable (private mode, blocked storage): never throw.
-  function readStored() {
-    try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
-  }
-  function writeStored(value) {
-    try { localStorage.setItem(STORAGE_KEY, value); return true; } catch (e) { return false; }
-  }
-  function clearStored() {
-    try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
-  }
-
-  // The link's ?name= wins; otherwise fall back to the remembered name.
-  let fromLink = null;
-  try { fromLink = new URLSearchParams(window.location.search).get(URL_PARAM); } catch (e) { /* ignore */ }
-  const candidate = fromLink !== null ? fromLink : readStored();
-  const allowedName = findAllowedName(candidate);
-
-  if (allowedName !== null) {
-    const remembered = writeStored(allowedName);
-
-    // Tidy the address bar, but only if the name is safely remembered
-    // (otherwise a reload would lose access).
-    if (fromLink !== null && remembered) {
-      try {
-        const url = new URL(window.location.href);
-        url.searchParams.delete(URL_PARAM);
-        window.history.replaceState(null, '', url.pathname + url.search + url.hash);
-      } catch (e) { /* ignore */ }
-    }
-
-    $('footer-name').textContent = allowedName;   // textContent: never inject HTML
-    $('gate').hidden = true;
-    $('app').hidden = false;
-  } else {
-    clearStored();                                // drop a remembered name that is no longer allowed
-    $('gate-msg').textContent = ALLOWED_NAMES.length === 0
-      ? 'This calculator is restricted. The allowlist is empty.'
-      : 'This calculator is restricted.';
-    // the calculator stays hidden
-  }
-})();
-</script>
 
 <script>
 (function () {
