@@ -683,11 +683,20 @@ footer{color:#789786}
     const failedSems = [];
     if (r3.failed) failedSems.push(3);
     if (r4.failed) failedSems.push(4);
-    const failText = failedSems.length
-      ? 'Project Work not passed — Sem ' + failedSems.join(' & ') + ' CGPA pending'
+    const hasFailedProject = failedSems.length > 0;
+    const failText = hasFailedProject
+      ? 'Project Work below 50 — Sem ' + failedSems.join(' & ') + ' failed'
       : '';
 
-    if (latest === null) {
+    // Any project mark below 50 makes the overall result FAIL.
+    if (hasFailedProject) {
+      cancelAnimationFrame(finalNum._raf);
+      finalNum._val = undefined;
+      finalNum.textContent = 'FAIL';
+      finalNum.classList.remove('dim');
+      resultStatus.textContent = 'Overall Result';
+      resultCaption.textContent = failText;
+    } else if (latest === null) {
       cancelAnimationFrame(finalNum._raf);
       finalNum._val = 0;
       finalNum.textContent = '0.00';
